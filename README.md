@@ -1,4 +1,4 @@
-# DisasterSim 🌊  
+# DisasterSim 🌀  
 **Preparing Communities for Typhoon Disasters Through Interactive Simulation**  
 
 ---  
