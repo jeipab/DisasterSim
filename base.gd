@@ -28,6 +28,8 @@ func animate() -> void:
 	# Step 3: Shrink back to original size
 	tween.tween_property(self, "scale", Vector2(original_scale.x * flip_direction, original_scale.y), 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	
-	# Step 4: End animation
+	# Step 4: Reset to original orientation
 	tween.tween_callback(func():
+		scale = original_scale
+		flip_direction = 1
 		animating = false)
