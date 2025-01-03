@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://nlycbmbobkci"]
+
+[ext_resource type="Script" path="res://base.gd" id="1_7mhas"]
+[ext_resource type="Texture2D" uid="uid://bbie1m21h4iqq" path="res://Art/test-squares-01.png" id="1_jry1p"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kuklw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_jry1p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7wxvy"]
+size = Vector2(521, 521)
+
+[node name="Base" type="Area2D"]
+position = Vector2(960, 540)
+script = ExtResource("1_7mhas")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_kuklw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0.5)
+shape = SubResource("RectangleShape2D_7wxvy")
