@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://iec111adrpte"]
+
+[ext_resource type="Script" path="res://card.gd" id="1_dwqk6"]
+[ext_resource type="Texture2D" uid="uid://dnitudx1utwq0" path="res://Art/test-squares-02.png" id="1_hirdr"]
+[ext_resource type="Texture2D" uid="uid://b8gkq8jyokmu4" path="res://Art/test-squares-03.png" id="2_imuso"]
+[ext_resource type="Texture2D" uid="uid://0esm545apcob" path="res://Art/test-squares-04.png" id="3_si2mh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1ht1x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hirdr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_imuso")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_si2mh")
+}],
+"loop": true,
+"name": &"still",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_waowe"]
+size = Vector2(521, 524)
+
+[node name="Card" type="Area2D"]
+position = Vector2(963, 509)
+script = ExtResource("1_dwqk6")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_1ht1x")
+animation = &"still"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -1)
+shape = SubResource("RectangleShape2D_waowe")
