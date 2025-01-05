@@ -4,11 +4,19 @@ var grow_speed := 5.0 # Speed of the grow/shrink animation
 var original_scale := Vector2(1, 1) # Original scale
 var grow_scale := Vector2(1.2, 1.2) # Scale during growth
 var animating := false # Prevents repeated clicks during animation
-var flip_direction := 1 # Tracks the direction of the flip (1 or -1)
+var current_scenario := 0 # Tracks the current scenario index
+var scenario_images := [] # Array to store scenario textures
+
+@onready var card_sprite := $CardSprite # Sprite2D node for the card
 
 func _ready() -> void:
-	original_scale = scale
+	# Set initial scale
+	original_scale = self.scale
 	self.connect("input_event", Callable(self, "_on_area2d_input_event"))
+	
+	# Load scenario textures from the Art folder
+	scenario_images = load_scenario_textures()
+	card_sprite.texture = scenario_images[0] # Start with the first texture
 
 func _on_area2d_input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not animating:
@@ -16,20 +24,46 @@ func _on_area2d_input_event(viewport, event, shape_idx) -> void:
 		animate()
 
 func animate() -> void:
+	# Grow the card
 	var tween = get_tree().create_tween()
-	
-	# Step 1: Grow
 	tween.tween_property(self, "scale", grow_scale, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	await tween.finished
 	
-	# Step 2: Flip (in the same direction)
-	flip_direction *= -1 # Toggle between 1 and -1
-	tween.tween_property(self, "scale:x", original_scale.x * flip_direction * 1.2, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	# Pause after grow animation
+	await get_tree().create_timer(0.1).timeout
 	
-	# Step 3: Shrink back to original size
-	tween.tween_property(self, "scale", Vector2(original_scale.x * flip_direction, original_scale.y), 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	# Shrink the card's X-axis to create a flip effect
+	tween = get_tree().create_tween()
+	tween.tween_property(self, "scale", Vector2(0, original_scale.y), 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
 	
-	# Step 4: Reset to original orientation
-	tween.tween_callback(func():
-		scale = original_scale
-		flip_direction = 1
-		animating = false)
+	# Change texture during the "flip"
+	update_card_texture()
+	
+	# Expand the card's X-axis back to original scale to complete the flip
+	tween = get_tree().create_tween()
+	tween.tween_property(self, "scale", Vector2(original_scale.x, original_scale.y), 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+	
+	# Restore the card's scale to original if needed
+	tween = get_tree().create_tween()
+	tween.tween_property(self, "scale", original_scale, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+	
+	# Mark the animation as finished
+	animating = false
+
+
+
+func load_scenario_textures() -> Array:
+	# Load images from the Art folder
+	return [
+		preload("res://Art/test-squares-02.png"),
+		preload("res://Art/test-squares-03.png"),
+		preload("res://Art/test-squares-04.png")
+	]
+
+func update_card_texture() -> void:
+	# Update the card's texture to the next scenario
+	current_scenario = (current_scenario + 1) % scenario_images.size()
+	card_sprite.texture = scenario_images[current_scenario]
