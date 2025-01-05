@@ -1,7 +1,8 @@
 extends Node2D
 
 # Shadow properties
-var max_opacity: float = 0.5  # Maximum opacity when farthest from the center
+var shadow_offset: float = 100.0  # Maximum vertical offset when farthest from the center
+var fixed_opacity: float = 0.50  # Fixed opacity for the shadow
 
 # Reference to the Sprite2D node
 @onready var shadow_sprite: Sprite2D = $Sprite2D
@@ -22,9 +23,9 @@ func update_shadow(mouse_position: Vector2) -> void:
 	var max_horizontal_distance = screen_size.x / 2
 	var normalized_distance = clamp(horizontal_distance / max_horizontal_distance, 0, 1)
 
-	# Update shadow opacity based on normalized distance
-	var opacity = normalized_distance * max_opacity
+	# Calculate vertical offset based on normalized distance
+	var vertical_offset = normalized_distance * shadow_offset
 
-	# Keep shadow centered and constant in size
-	shadow_sprite.position = screen_center
-	shadow_sprite.modulate = Color(0, 0, 0, opacity)
+	# Update shadow position and opacity
+	shadow_sprite.position = Vector2(screen_center.x, screen_center.y + vertical_offset)
+	shadow_sprite.modulate = Color(0, 0, 0, fixed_opacity)
