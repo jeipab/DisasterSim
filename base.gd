@@ -10,15 +10,19 @@ var scenario_images := [] # Array to store scenario textures
 @onready var card_sprite := $CardSprite # Sprite2D node for the card
 
 func _ready() -> void:
+	# Initialize the random number generator
+	randomize()
+	
 	# Set initial scale
 	original_scale = self.scale
 	self.connect("input_event", Callable(self, "_on_area2d_input_event"))
 	
 	# Load scenario textures from the Art folder
 	scenario_images = load_scenario_textures()
-	card_sprite.texture = scenario_images[0] # Start with the first texture
+	if scenario_images.size() > 0:
+		card_sprite.texture = scenario_images[0] # Start with the first texture
 
-func _on_area2d_input_event(viewport, event, shape_idx) -> void:
+func _on_area2d_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not animating:
 		animating = true
 		animate()
@@ -58,12 +62,20 @@ func animate() -> void:
 func load_scenario_textures() -> Array:
 	# Load images from the Art folder
 	return [
+		preload("res://Art/test-squares-01.png"),
 		preload("res://Art/test-squares-02.png"),
 		preload("res://Art/test-squares-03.png"),
 		preload("res://Art/test-squares-04.png")
 	]
 
 func update_card_texture() -> void:
-	# Update the card's texture to the next scenario
-	current_scenario = (current_scenario + 1) % scenario_images.size()
-	card_sprite.texture = scenario_images[current_scenario]
+	# Ensure there are textures loaded
+	if scenario_images.size() > 1: # Only randomize if there are multiple textures
+		var random_index = randi() % scenario_images.size()
+		
+		# Ensure the new texture is not the current texture
+		while scenario_images[random_index] == card_sprite.texture:
+			random_index = randi() % scenario_images.size()
+		
+		# Update the card's texture
+		card_sprite.texture = scenario_images[random_index]
