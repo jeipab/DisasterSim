@@ -14,7 +14,7 @@ func _ready() -> void:
 	right_position = center_position + Vector2(200, 0)
 
 # Called every frame
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	follow_cursor()
 
 # Follow the mouse cursor

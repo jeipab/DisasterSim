@@ -11,6 +11,9 @@ var fall_speed: float = 1600  # Base speed for the vertical fall animation
 var horizontal_fall_speed: float = 600  # Base speed for horizontal trajectory
 var rotation_speed: float = 90.0  # Speed of rotation during the fall
 
+# Signals
+signal card_fell_off
+
 # Positions
 var left_position: Vector2
 var right_position: Vector2
@@ -81,6 +84,7 @@ func handle_fall_animation(delta: float) -> void:
 	# Check if the card is fully offscreen
 	var viewport_height = get_viewport_rect().size.y
 	if position.y > viewport_height + 100:  # Ensure card fully exits the screen with a buffer
+		emit_signal("card_fell_off")  # Emit signal when card is offscreen
 		queue_free()  # Remove the card from the scene
 
 # Reset card to center position with animation

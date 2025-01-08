@@ -1,5 +1,8 @@
 extends Area2D
 
+# Signal to notify when a new card should be introduced
+signal new_card_needed
+
 var grow_speed := 5.0 # Speed of the grow/shrink animation
 var original_scale := Vector2(1, 1) # Original scale
 var grow_scale := Vector2(1.2, 1.2) # Scale during growth
@@ -9,6 +12,7 @@ var scenario_images := [] # Array to store scenario textures
 
 @onready var card_sprite := $CardSprite # Sprite2D node for the card
 
+# Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	# Initialize the random number generator
 	randomize()
@@ -22,11 +26,13 @@ func _ready() -> void:
 	if scenario_images.size() > 0:
 		card_sprite.texture = scenario_images[0] # Start with the first texture
 
+# When the base is clicked, start the animation
 func _on_area2d_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not animating:
 		animating = true
 		animate()
 
+# Flip the base and introduce a new card
 func animate() -> void:
 	# Grow the card
 	var tween = get_tree().create_tween()
@@ -56,9 +62,11 @@ func animate() -> void:
 	
 	# Mark the animation as finished
 	animating = false
+	
+	# After the flip is done, emit the signal
+	emit_signal("new_card_needed", card_sprite.texture)  # Pass the current texture of the flipped card
 
-
-
+# Load the scenario textures
 func load_scenario_textures() -> Array:
 	# Load images from the Art folder
 	return [
@@ -68,6 +76,7 @@ func load_scenario_textures() -> Array:
 		preload("res://Art/test-squares-04.png")
 	]
 
+# Change the card texture after each flip
 func update_card_texture() -> void:
 	# Ensure there are textures loaded
 	if scenario_images.size() > 1: # Only randomize if there are multiple textures
