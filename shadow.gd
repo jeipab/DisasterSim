@@ -16,12 +16,15 @@ var initial_opacity: float = 0.5
 # Smoothing properties
 var current_vertical_offset: float = 0.0
 var target_vertical_offset: float = 0.0
-var smoothing_speed: float = 5.0  # Adjust this to control smoothing speed
+var moving_away_speed: float = 50.0  # Smooth speed when moving away from center
+var returning_speed: float = 30.0   # Snappy speed when returning to center
+var was_away_from_center: bool = false  # Track if we were away from center
 
 # Cursor movement detection
 var cursor_moved: bool = false
 var initial_mouse_pos: Vector2
 var movement_threshold: float = 10.0
+var center_threshold: float = 20.0  # Threshold to consider cursor "at center"
 
 # Reference to the shadow sprite and mask
 @onready var shadow_sprite: Sprite2D = $Sprite2D
@@ -63,12 +66,31 @@ func update_shadow(mouse_position: Vector2, delta: float) -> void:
 	# Set target vertical offset
 	target_vertical_offset = normalized_distance * shadow_offset
 	
-	# Smoothly interpolate current offset to target
-	current_vertical_offset = lerp(current_vertical_offset, target_vertical_offset, delta * smoothing_speed)
+	# Determine if we're near the center
+	var is_near_center = horizontal_distance < center_threshold
 	
-	# Smoothly interpolate rotation
+	# Choose animation speed based on movement direction
+	var current_speed
+	if is_near_center and was_away_from_center:
+		# Snappy return to center
+		current_speed = returning_speed
+	else:
+		# Smooth movement away from center
+		current_speed = moving_away_speed
+	
+	# Update the away-from-center state
+	was_away_from_center = !is_near_center
+	
+	# Apply movement with the selected speed
+	current_vertical_offset = lerp(current_vertical_offset, target_vertical_offset, delta * current_speed)
+	
+	# If we're returning to center and very close to it, snap to initial position
+	if is_near_center and abs(current_vertical_offset) < 5.0:
+		current_vertical_offset = 0.0
+	
+	# Smoothly interpolate rotation (keep this smooth regardless of direction)
 	var target_rotation = -mask_node.rotation
-	var current_rotation = lerp(shadow_sprite.rotation, target_rotation, delta * smoothing_speed)
+	var current_rotation = lerp(shadow_sprite.rotation, target_rotation, delta * moving_away_speed)
 	
 	# Update shadow position and rotation
 	shadow_sprite.position = Vector2(fixed_x_position, screen_center.y + shadow_y_offset + current_vertical_offset)
