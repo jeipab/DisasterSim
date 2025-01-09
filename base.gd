@@ -9,6 +9,7 @@ var grow_scale := Vector2(1.2, 1.2) # Scale during growth
 var animating := false # Prevents repeated clicks during animation
 var current_scenario := 0 # Tracks the current scenario index
 var scenario_images := [] # Array to store scenario textures
+var first_texture: Texture  # Store the first texture
 
 @onready var card_sprite := $CardSprite # Sprite2D node for the card
 
@@ -24,7 +25,8 @@ func _ready() -> void:
 	# Load scenario textures from the Art folder
 	scenario_images = load_scenario_textures()
 	if scenario_images.size() > 0:
-		card_sprite.texture = scenario_images[0] # Start with the first texture
+		first_texture = scenario_images[0]  # Store the first texture
+		card_sprite.texture = first_texture  # Start with the first texture
 
 # When the base is clicked, start the animation
 func _on_area2d_input_event(_viewport, event, _shape_idx) -> void:
@@ -48,7 +50,7 @@ func animate() -> void:
 	await tween.finished
 	
 	# Change texture during the "flip"
-	update_card_texture()
+	var random_texture = update_card_texture()
 	
 	# Expand the card's X-axis back to original scale to complete the flip
 	tween = get_tree().create_tween()
@@ -60,11 +62,14 @@ func animate() -> void:
 	tween.tween_property(self, "scale", original_scale, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 	
+	# After animation completes, emit the signal with the random texture
+	emit_signal("new_card_needed", random_texture)
+	
+	# Reset base texture to first texture
+	card_sprite.texture = first_texture
+	
 	# Mark the animation as finished
 	animating = false
-	
-	# After the flip is done, emit the signal
-	emit_signal("new_card_needed", card_sprite.texture)  # Pass the current texture of the flipped card
 
 # Load the scenario textures
 func load_scenario_textures() -> Array:
@@ -77,7 +82,7 @@ func load_scenario_textures() -> Array:
 	]
 
 # Change the card texture after each flip
-func update_card_texture() -> void:
+func update_card_texture() -> Texture:
 	# Ensure there are textures loaded
 	if scenario_images.size() > 1: # Only randomize if there are multiple textures
 		var random_index = randi() % scenario_images.size()
@@ -88,3 +93,6 @@ func update_card_texture() -> void:
 		
 		# Update the card's texture
 		card_sprite.texture = scenario_images[random_index]
+		return scenario_images[random_index]
+	
+	return card_sprite.texture
