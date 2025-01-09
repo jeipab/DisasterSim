@@ -8,6 +8,7 @@ size = Vector2(521, 521)
 
 [node name="Base" type="Area2D"]
 position = Vector2(960, 540)
+input_pickable = false
 script = ExtResource("1_7mhas")
 metadata/_edit_group_ = true
 
