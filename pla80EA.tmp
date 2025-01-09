@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://b852gf4qy1jgd"]
+
+[ext_resource type="Script" path="res://playing.gd" id="1_bfm26"]
+[ext_resource type="PackedScene" uid="uid://iec111adrpte" path="res://card.tscn" id="1_m7s34"]
+[ext_resource type="PackedScene" uid="uid://cxkr3y76skqbt" path="res://shadow.tscn" id="2_ocf2c"]
+[ext_resource type="PackedScene" uid="uid://b8hmmg8ujl2hx" path="res://mask.tscn" id="4_qkld8"]
+[ext_resource type="PackedScene" uid="uid://nlycbmbobkci" path="res://base.tscn" id="5_bya8a"]
+
+[node name="Playing" type="Node2D"]
+script = ExtResource("1_bfm26")
+
+[node name="Base" parent="." instance=ExtResource("5_bya8a")]
+
+[node name="Card" parent="." instance=ExtResource("1_m7s34")]
+
+[node name="Mask" parent="." instance=ExtResource("4_qkld8")]
+clip_children = 1
+light_mask = 0
+
+[node name="Shadow" parent="Mask" instance=ExtResource("2_ocf2c")]
+position = Vector2(-3840, -2160)
+scale = Vector2(4, 4)
