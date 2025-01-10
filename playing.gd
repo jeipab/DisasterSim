@@ -6,6 +6,7 @@ extends Node
 @onready var mask_scene = preload("res://mask.tscn")
 @onready var shadow_scene = preload("res://shadow.tscn")
 @onready var initial_mask_position = Vector2(960, 540)
+@onready var choice_text_scene = preload("res://choice_text.tscn")
 
 # Variable to track the animated sprite
 var animated_sprite = null
@@ -71,6 +72,13 @@ func spawn_new_card(texture: Texture) -> void:
 	new_mask.add_child(shadow)
 	shadow.position = Vector2(-3840, -2160)
 	shadow.scale = Vector2(4, 4)
+	
+	# Add choice text
+	var choice_text = choice_text_scene.instantiate()
+	shadow.add_child(choice_text)
+	choice_text.name = "ChoiceText"
+	choice_text.position = Vector2(960, 540)
+	choice_text.scale = Vector2(0.25, 0.25)
 	
 	print("[DEBUG] Mask and shadow created successfully")
 	

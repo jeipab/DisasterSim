@@ -105,7 +105,7 @@ func handle_rise_animation(delta: float) -> void:
 	shadow_sprite.position.y -= rise_speed * delta
 	shadow_sprite.modulate.a = max(0, shadow_sprite.modulate.a - fade_speed * delta)
 	
-	if shadow_sprite.modulate.a <= 0 or shadow_sprite.position.y < -1000:
+	if shadow_sprite.modulate.a <= 0:
 		emit_signal("shadow_disappeared")
 		queue_free()
 

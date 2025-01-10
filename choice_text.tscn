@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://vvvcgbfs6a4m"]
+
+[ext_resource type="Script" path="res://choice_text.gd" id="1_gauu4"]
+
+[node name="ChoiceText" type="Node2D"]
+position = Vector2(960, 540)
+script = ExtResource("1_gauu4")
+
+[node name="LeftChoice" type="RichTextLabel" parent="."]
+offset_left = -650.0
+offset_top = -550.0
+offset_right = -350.0
+offset_bottom = -350.0
+scale = Vector2(3, 3)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "Left Choice"
+fit_content = true
+scroll_active = false
+
+[node name="RightChoice" type="RichTextLabel" parent="."]
+offset_left = -650.0
+offset_top = -550.0
+offset_right = -150.0
+offset_bottom = -350.0
+scale = Vector2(3, 3)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "Right Choice"
+fit_content = true
+scroll_active = false
