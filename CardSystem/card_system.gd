@@ -2,11 +2,11 @@ extends Node
 
 # Reference to the Base, Card, and Mask scenes
 @onready var base_node = $Base
-@onready var card_scene = preload("res://card.tscn")
-@onready var mask_scene = preload("res://mask.tscn")
-@onready var shadow_scene = preload("res://shadow.tscn")
+@onready var card_scene = preload("res://CardSystem/card.tscn")
+@onready var mask_scene = preload("res://CardSystem/mask.tscn")
+@onready var shadow_scene = preload("res://CardSystem/shadow.tscn")
 @onready var initial_mask_position = Vector2(960, 540)
-@onready var choice_text_scene = preload("res://choice_text.tscn")
+@onready var choice_text_scene = preload("res://CardSystem/choice_text.tscn")
 
 # Variable to track the animated sprite
 var animated_sprite = null

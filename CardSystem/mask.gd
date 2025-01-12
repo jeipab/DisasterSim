@@ -4,11 +4,17 @@ extends Sprite2D
 var center_position: Vector2
 var left_position: Vector2
 var right_position: Vector2
-var max_tilt_angle: float = 15  # Maximum tilt angle in degrees
-var transition_speed: float = 0.3  # Duration for transition animations
-var cursor_moved: bool = false  # Whether the cursor has moved
-var initial_animation: bool = true  # Whether the mask is transitioning from no movement
-var initial_mouse_pos: Vector2  # Initial cursor position for movement detection
+var max_tilt_angle: float = 15
+var transition_speed: float = 0.3
+var cursor_moved: bool = false
+var initial_animation: bool = true
+var initial_mouse_pos: Vector2
+
+# Vertical movement properties
+var vertical_offset_speed := 400.0
+var max_vertical_offset := 50.0
+var current_vertical_offset := 0.0
+var base_y_position: float
 
 # Falling animation properties
 var is_animating: bool = false
@@ -20,16 +26,15 @@ var swiped_left: bool = false
 var swiped_right: bool = false
 var threshold: float = 150
 
-signal mask_disappeared  # New signal for when mask is removed
+signal mask_disappeared
 
-# Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	center_position = position
+	base_y_position = position.y
 	left_position = center_position - Vector2(200, 0)
 	right_position = center_position + Vector2(200, 0)
 	initial_mouse_pos = get_global_mouse_position()
 
-# Called every frame
 func _process(delta: float) -> void:
 	if is_animating:
 		handle_fall_animation(delta)
@@ -39,13 +44,11 @@ func _process(delta: float) -> void:
 		if cursor_moved:
 			follow_cursor(delta)
 
-# Check if the cursor has moved from the initial position
 func check_cursor_movement(delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
 	if global_mouse_pos.distance_to(initial_mouse_pos) > 10:
 		cursor_moved = true
 
-# Follow the mouse cursor smoothly
 func follow_cursor(delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
 
@@ -56,11 +59,27 @@ func follow_cursor(delta: float) -> void:
 	else:
 		position.x = clamp(global_mouse_pos.x, left_position.x, right_position.x)
 
+	# Calculate distance from center for vertical movement
+	var distance_from_center = abs(position.x - center_position.x)
+	var at_edge = distance_from_center >= threshold
+
+	# Handle vertical movement
+	if at_edge:
+		var vertical_movement = Input.get_last_mouse_velocity().y
+		if vertical_movement < -50:  # Upward movement
+			current_vertical_offset = move_toward(current_vertical_offset, -max_vertical_offset, vertical_offset_speed * delta)
+		elif vertical_movement > 50:  # Downward movement
+			current_vertical_offset = move_toward(current_vertical_offset, 0, vertical_offset_speed * delta)
+	else:
+		# Reset position when not at edge
+		current_vertical_offset = move_toward(current_vertical_offset, 0, vertical_offset_speed * delta)
+
+	# Apply vertical offset
+	position.y = base_y_position + current_vertical_offset
+
 	var tilt_ratio = (position.x - center_position.x) / (right_position.x - center_position.x)
 	rotation_degrees = tilt_ratio * max_tilt_angle
-	position.y = center_position.y
 
-# Input event handler
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and not is_animating:
 		if position.x >= center_position.x + threshold:
@@ -72,7 +91,6 @@ func _input(event: InputEvent) -> void:
 		else:
 			reset_mask()
 
-# Start the fall animation
 func start_fall_animation() -> void:
 	is_animating = true
 	if swiped_right:
@@ -80,7 +98,6 @@ func start_fall_animation() -> void:
 	elif swiped_left:
 		fall_velocity = Vector2(-horizontal_fall_speed, fall_speed)
 
-# Handle falling animation
 func handle_fall_animation(delta: float) -> void:
 	position += fall_velocity * delta
 
@@ -91,10 +108,9 @@ func handle_fall_animation(delta: float) -> void:
 
 	var viewport_height = get_viewport_rect().size.y
 	if position.y > viewport_height + 100:
-		emit_signal("mask_disappeared")  # Emit signal before being freed
+		emit_signal("mask_disappeared")
 		queue_free()
 
-# Reset mask to center position with animation
 func reset_mask() -> void:
 	var position_tween = create_tween()
 	position_tween.set_trans(Tween.TRANS_QUAD)

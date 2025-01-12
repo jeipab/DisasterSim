@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://vvvcgbfs6a4m"]
 
-[ext_resource type="Script" path="res://choice_text.gd" id="1_gauu4"]
+[ext_resource type="Script" path="res://CardSystem/choice_text.gd" id="1_gauu4"]
 
 [node name="ChoiceText" type="Node2D"]
 position = Vector2(960, 540)
