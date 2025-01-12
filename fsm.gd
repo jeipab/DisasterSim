@@ -6,31 +6,6 @@ var inputs: Array[Choice] = [Choice.LEFT, Choice.RIGHT]
 var states: Array[int]
 var start_state: int = 1
 var final_states: Array[int]
-const transition_table = {
-	1: { Choice.LEFT: 2, Choice.RIGHT: 3 }
-}
-
-var current_state: int = start_state;
-
-## This function handles the transition between states based on the input choice.
-## It returns a dictionary representing the next state (or an empty dictionary in case of an invalid input).
-##
-## @param input_choice: The input choice that triggers the transition.
-## @return A dictionary representing the state associated with the new state after the transition, 
-##         or an empty dictionary if the input is invalid.
-## @example
-## var next_state = transition(Choice.LEFT)
-## if next_state.empty():
-##     print("Invalid transition!")
-func transition(input_choice: Choice) -> Dictionary:
-	if transition_table.has(current_state) and transition_table[current_state].has(input_choice):
-		current_state = transition_table[current_state][input_choice]
-		print("Current State: ", current_state)
-		return cards.get(current_state)
-	else:
-		push_error("Invalid input: ", input_choice, "at state: ", current_state)
-		return {}
-		
 
 const cards: Dictionary = {
 	# Initial Phase (Preparation)
@@ -504,8 +479,7 @@ const cards: Dictionary = {
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Populate the states and the final states
-	states = cards.keys()
-	for id in states:
+	for id in cards.keys():
 		var card = cards[id]
 		if card["phase"] == "concluding":
 			final_states.append(id)
