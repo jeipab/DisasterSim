@@ -6,28 +6,14 @@
 position = Vector2(960, 540)
 script = ExtResource("1_gauu4")
 
-[node name="LeftChoice" type="RichTextLabel" parent="."]
-offset_left = -1000.0
-offset_top = -550.0
-offset_right = -700.0
-offset_bottom = -350.0
-scale = Vector2(3, 3)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-bbcode_enabled = true
-text = "Left Choice"
-fit_content = true
-scroll_active = false
-
-[node name="RightChoice" type="RichTextLabel" parent="."]
-offset_left = 100.0
-offset_top = -550.0
+[node name="ChoiceLabel" type="RichTextLabel" parent="."]
+offset_left = -400.0
+offset_top = -400.0
 offset_right = 400.0
-offset_bottom = -350.0
+offset_bottom = -200.0
 scale = Vector2(3, 3)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
+theme_override_font_sizes/normal_font_size = 48
 bbcode_enabled = true
-text = "Right Choice"
 fit_content = true
 scroll_active = false
