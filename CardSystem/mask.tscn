@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b8hmmg8ujl2hx"]
 
 [ext_resource type="Texture2D" uid="uid://bbie1m21h4iqq" path="res://Art/test-squares-01.png" id="1_sgb4j"]
-[ext_resource type="Script" path="res://mask.gd" id="2_ecbdp"]
+[ext_resource type="Script" path="res://CardSystem/mask.gd" id="2_ecbdp"]
 
 [node name="Mask" type="Sprite2D"]
 position = Vector2(960, 540)
