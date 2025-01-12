@@ -1,9 +1,7 @@
 extends Node
 
 # Signals
-signal resources_updated(resources: Dictionary)
-signal card_completed(outcome: Dictionary)
-signal game_over(reason: String)
+signal card_changed(resources: Dictionary)
 
 # Constants
 const MIN_RESOURCE: int = 0
@@ -19,99 +17,87 @@ var resources: Dictionary = {
 }
 
 # Game state
-var currentCard: Dictionary
-var card_history: Array = []
-var used_cards_index: Array = []
+var current_card: Dictionary
 var turn_count: int = 0
-var game_active: bool = false;
+var game_active: bool = false
 
-# Content Management
-var card_pool: Array = []
+# FSM reference
+@onready var fsm: Node = $FSM
 
-func load_content() -> void:
-	var card_data = load_json_file("res://data/cards.json")
-	
-	# Initialize card pools from loaded data
-	card_pool = card_data.get("regular_cards", [])
-	emit_signal("resources_updated", resources)
-	
 func reset_resources() -> void:
 	resources["stamina"] = STARTING_RESOURCE
 	resources["supplies"] = STARTING_RESOURCE
 	resources["morale"] = STARTING_RESOURCE
 	resources["property"] = STARTING_RESOURCE
-	emit_signal("resources_updated", resources)
+	turn_count = 0
+	game_active = true
+	current_card = fsm.cards.get(fsm.start_state)
+	emit_signal("card_changed", current_card)
 	
 func update_resource(resource: String, amount: int) -> void:
 	if resources.has(resource):
-		resources[resource] = clamp(resources[resource] + amount, MIN_RESOURCE, MAX_RESOURCE)
-	
-	# Check for game over conditions
-	if resources[resource] <= MIN_RESOURCE:
-		emit_signal("game_over", "Resource %s reached critical level" % resource)
-		game_active = false
+		var new_value = resources[resource] + amount;
 		
-func draw_next_card() -> void:
-	if card_pool.size() == used_cards_index.size():
-		emit_signal("game_over", "No more cards available")
-		game_active = false
+		# Check for game over condition before clamping
+		if new_value <= MIN_RESOURCE:
+			resources[resource] = MIN_RESOURCE;
+			print("game_over", "Resource %s reached critical level" % resource)
+			game_active = false;
+		else:
+			resources[resource] = clamp(new_value, MIN_RESOURCE, MAX_RESOURCE);	
+
+func process_choice(choice_str: String) -> void:		
+	# Early exit if the game is not active
+	if not game_active:
+		push_warning("Game is inactive. No further choices can be processed.")
 		return
 		
-	# Randomly select a card from the pool	
-	var card_index: int
-	while true:
-		card_index = randi() % card_pool.size()
-		if not used_cards_index.has(card_index):
-			break;
+	if current_card["phase"] == "concluding":
+		print("end Game");
+		game_active = false;
+		return
+		
+	if not current_card.has("choices") or not current_card["choices"].has(choice_str):
+		return
+		
+	var fsm_choice
+	if (choice_str == "left"):
+		fsm_choice = fsm.Choice.LEFT
+	elif (choice_str == "right"):
+		fsm_choice = fsm.Choice.RIGHT
+	else:
+		push_error("Invalid Choice: ", choice_str)
+		return
 	
-	used_cards_index.append(card_index)		
-	currentCard = card_pool[card_index]
-	print(currentCard)
-
-func process_choice(choice: String) -> void:
-	var outcome = currentCard["choices"][choice]
+	var outcome = current_card["choices"][choice_str]
+	
+	# Transition to the next card
+	if outcome.has("next_card"):
+		var next_card_id = outcome["next_card"]
+		if fsm.cards.has(next_card_id):
+			current_card = fsm.cards[next_card_id]
+			print("Transitioned to card: ", current_card)
+		else:
+			push_error("Invalid next card ID: ", next_card_id)
+	else:
+		push_error("Choice missing 'next_card' field: ", choice_str)	
 	
 	# Process resource changes
 	for resource in outcome.get("resources", {}).keys():
-		update_resource(resource, outcome["resources"][resource])
-	
-	# Add to history
-	card_history.append({
-		"card": currentCard,
-		"choice": choice,
-		"outcome": outcome,
-		"turn": turn_count
-	})
-	
+		var amount = outcome["resources"][resource]
+		update_resource(resource, amount)
+		
 	print("Outcome: ", outcome)
-	print("Updated Resource: ", resources)
+	print("Updated Resources: ", resources)
 	
 	turn_count += 1
-	if game_active:
-		draw_next_card()
+	
+	emit_signal("card_changed", current_card)
+	
 		
-	emit_signal("card_completed", outcome)
-	
-func load_json_file(path: String) -> Dictionary:
-	if FileAccess.file_exists(path):
-		var file = FileAccess.open(path, FileAccess.READ)
-		var json = JSON.parse_string(file.get_as_text())
-		return json if json is Dictionary else {}
-	return {}
-	
-func start_game() -> void:
-	reset_resources()
-	turn_count = 0
-	game_active = true
-	draw_next_card()
-	emit_signal("resources_updated", resources)		
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print("Game Initialized!")
-	load_content()
-	start_game()
-	# pass # Replace with function body.
+	reset_resources()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
