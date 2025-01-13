@@ -28,6 +28,7 @@ var fall_velocity: Vector2 = Vector2.ZERO
 
 # Signals
 signal card_fell_off
+signal card_chosen(is_right)
 
 func _ready() -> void:
 	center_position = position
@@ -86,9 +87,11 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and not is_animating:
 		if position.x >= center_position.x + threshold:
 			swiped_right = true
+			emit_signal("card_chosen", true) 
 			start_fall_animation()
 		elif position.x <= center_position.x - threshold:
 			swiped_left = true
+			emit_signal("card_chosen", false)
 			start_fall_animation()
 		else:
 			reset_card()
@@ -110,6 +113,7 @@ func handle_fall_animation(delta: float) -> void:
 
 	var viewport_height = get_viewport_rect().size.y
 	if position.y > viewport_height + 500:
+		print("[Card] Card fell off, emitting signal")
 		emit_signal("card_fell_off")
 		queue_free()
 

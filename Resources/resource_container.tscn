@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvhhue32262p6"]
+
+[ext_resource type="PackedScene" uid="uid://ckurxv47s0715" path="res://Resources/resource_indicator.tscn" id="1_indicator"]
+
+[node name="ResourceContainer" type="Node2D"]
+
+[node name="Grouped" type="Node2D" parent="."]
+position = Vector2(960, 0)
+
+[node name="Stamina" parent="Grouped" instance=ExtResource("1_indicator")]
+offset_left = -225.0
+offset_top = 20.0
+offset_right = 175.0
+offset_bottom = 420.0
+scale = Vector2(0.15, 0.15)
+metadata/_edit_group_ = true
+
+[node name="Morale" parent="Grouped" instance=ExtResource("1_indicator")]
+offset_left = -75.0
+offset_top = 20.0
+offset_right = 325.0
+offset_bottom = 420.0
+scale = Vector2(0.15, 0.15)
+metadata/_edit_group_ = true
+
+[node name="Property" parent="Grouped" instance=ExtResource("1_indicator")]
+offset_left = 75.0
+offset_top = 20.0
+offset_right = 475.0
+offset_bottom = 420.0
+scale = Vector2(0.15, 0.15)
+metadata/_edit_group_ = true
+
+[node name="Supplies" parent="Grouped" instance=ExtResource("1_indicator")]
+offset_left = 225.0
+offset_top = 20.0
+offset_right = 625.0
+offset_bottom = 420.0
+scale = Vector2(0.15, 0.15)
+metadata/_edit_group_ = true

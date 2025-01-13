@@ -1,5 +1,7 @@
 extends Node
 
+signal card_spawned(card)  # Add this at the top with other signals
+
 # Reference to the Base, Card, and Mask scenes
 @onready var base_node = $Base
 @onready var card_scene = preload("res://CardSystem/card.tscn")
@@ -55,6 +57,9 @@ func spawn_new_card(texture: Texture) -> void:
 		
 	# Connect the card's signal to Base's animate() function
 	new_card.connect("card_fell_off", Callable(self, "_on_card_fell_off"))
+	
+	# Emit signal that new card was spawned
+	emit_signal("card_spawned", new_card)
 	
 	# Spawn new mask with shadow whenever a new card is spawned
 	mask_count += 1

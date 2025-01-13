@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8kyecgu6fbm7"]
+[gd_scene load_steps=5 format=3 uid="uid://c8kyecgu6fbm7"]
 
 [ext_resource type="Script" path="res://Game/game.gd" id="1_pvf02"]
 [ext_resource type="PackedScene" uid="uid://c0xl3d74ji0ge" path="res://CardSystem/scenario_text.tscn" id="2_43ynp"]
 [ext_resource type="PackedScene" uid="uid://b852gf4qy1jgd" path="res://CardSystem/card_system.tscn" id="3_m7eef"]
+[ext_resource type="PackedScene" uid="uid://dvhhue32262p6" path="res://Resources/resource_container.tscn" id="4_resource"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_pvf02")
 metadata/_edit_group_ = true
+
+[node name="ResourceContainer" parent="." instance=ExtResource("4_resource")]
+position = Vector2(-30, 50)
 
 [node name="ScenarioText" parent="." instance=ExtResource("2_43ynp")]
 position = Vector2(0, 100)

@@ -29,7 +29,10 @@ func _ready() -> void:
 	# Connect to the card system's signals
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 	if card_system:
-		card_system.get_node("Base").connect("new_card_needed", Callable(self, "_on_new_card_needed"))
+		card_system.connect("card_spawned", _on_card_spawned)
+		print("[ScenarioText] Connected to CardSystem")
+	else:
+		print("[ScenarioText] Failed to find CardSystem")
 	
 	# Set initial scenario
 	set_new_scenario()
@@ -60,5 +63,11 @@ func set_new_scenario() -> void:
 	is_typing = true
 	type_timer = 0.0
 
-func _on_new_card_needed(_texture) -> void:
+func _on_card_spawned(card) -> void:
+	if !card.is_connected("card_chosen", _on_card_chosen):
+		card.connect("card_chosen", _on_card_chosen)
+		print("[ScenarioText] Connected to new card")
+
+func _on_card_chosen(_is_right: bool) -> void:
+	print("[ScenarioText] Card chosen, setting new scenario")
 	set_new_scenario()
