@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://nlycbmbobkci"]
 
 [ext_resource type="Script" path="res://CardSystem/base.gd" id="1_7mhas"]
-[ext_resource type="Texture2D" uid="uid://c8wwxsidgsprm" path="res://Art/directed_square-05.png" id="2_l66bl"]
+[ext_resource type="Texture2D" uid="uid://dv8gpfpa7hr2" path="res://Art/Card_Back_Card (Back).png" id="2_jjtb1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7wxvy"]
 size = Vector2(521, 521)
@@ -14,7 +14,7 @@ metadata/_edit_group_ = true
 
 [node name="CardSprite" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_l66bl")
+texture = ExtResource("2_jjtb1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 0.5)

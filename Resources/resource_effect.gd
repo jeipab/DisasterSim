@@ -7,7 +7,7 @@ extends Node2D
 # Movement properties
 var initial_position: Vector2
 var target_position: Vector2
-var move_amount: float = 600.0  # Amount to move down when tilted
+var move_amount: float = 700.0  # Amount to move down when tilted
 var down_animation_speed: float = 5.0  # Speed of downward movement
 var up_animation_speed: float = 8.0   # Faster speed for returning to center
 var current_animation_speed: float = 5.0  # Current animation speed

@@ -75,6 +75,7 @@ func animate() -> void:
 func load_scenario_textures() -> Array:
 	# Load images from the Art folder
 	return [
+		preload("res://Art/Card_Back_Card (Back).png"),
 		preload("res://Art/test-squares-01.png"),
 		preload("res://Art/test-squares-02.png"),
 		preload("res://Art/test-squares-03.png"),

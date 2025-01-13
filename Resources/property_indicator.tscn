@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://ble4cnhislr3q"]
 
 [ext_resource type="Script" path="res://Resources/property_indicator.gd" id="1_be72w"]
-[ext_resource type="Texture2D" uid="uid://dv3xpta7o584r" path="res://Icons/resource-placeholder.svg" id="2_12u47"]
-[ext_resource type="Texture2D" uid="uid://b73lqko38v1oy" path="res://Icons/resource-placeholder-frame-02.svg" id="3_oufxf"]
+[ext_resource type="Texture2D" uid="uid://h0pukedt2j1j" path="res://Icons/Resource_Icons_Property No Outline.png" id="2_6jtox"]
+[ext_resource type="Texture2D" uid="uid://58b47mkjtnql" path="res://Icons/Resource_Icons_Property No Fill Outline.png" id="3_ugy0u"]
 [ext_resource type="PackedScene" uid="uid://dfq3pfd0y86a2" path="res://Resources/resource_effect.tscn" id="4_fwjfu"]
 
 [node name="PropertyIndicator" type="Control"]
@@ -22,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_12u47")
+texture = ExtResource("2_6jtox")
 expand_mode = 1
 stretch_mode = 5
 
@@ -31,6 +31,7 @@ layout_mode = 0
 offset_left = 21.0
 offset_right = 379.0
 offset_bottom = 401.0
+color = Color(0.258824, 0.682353, 0.788235, 1)
 
 [node name="Frame" type="TextureRect" parent="FillMask"]
 clip_children = 1
@@ -40,7 +41,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_oufxf")
+texture = ExtResource("3_ugy0u")
 expand_mode = 1
 stretch_mode = 5
 

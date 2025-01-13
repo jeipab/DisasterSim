@@ -11,16 +11,15 @@ var current_value: float = 0.0
 var target_value: float = 0.0
 
 # Color states
-var default_color = Color.WHITE
+var default_color = Color("42aec9")
 var increase_color = Color.GREEN
 var decrease_color = Color.RED
-var current_color = Color.WHITE
-var target_color = Color.WHITE
+var current_color = Color("42aec9")
+var target_color = Color("42aec9")
 var is_color_transitioning = false
 
 # Resource identification
 @export var resource_type: String = "Base"
-
 @onready var color_fill = $FillMask/ColorFill
 
 func _ready() -> void:
@@ -58,6 +57,8 @@ func _on_card_chosen(is_right: bool) -> void:
 func initialize(value: float) -> void:
 	current_value = value
 	target_value = value
+	current_color = default_color
+	color_fill.color = current_color
 	update_visualization()
 
 func _process(delta: float) -> void:
@@ -74,6 +75,8 @@ func _process(delta: float) -> void:
 		# Check if we're close enough to target color to stop transitioning
 		if current_color.is_equal_approx(target_color):
 			is_color_transitioning = false
+			current_color = default_color  # Force reset to default
+			color_fill.color = current_color
 
 func set_value(new_value: float) -> void:
 	target_value = clamp(new_value, min_value, max_value)
@@ -86,7 +89,7 @@ func get_value() -> float:
 
 func flash_color(new_color: Color) -> void:
 	current_color = new_color
-	target_color = default_color
+	target_color = Color(default_color.r, default_color.g, default_color.b, default_color.a)  # Create a new Color instance
 	is_color_transitioning = true
 	color_fill.color = current_color
 

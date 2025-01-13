@@ -120,10 +120,12 @@ func _input(event: InputEvent) -> void:
 		if position.x >= center_position.x + threshold:
 			swiped_right = true
 			emit_signal("card_chosen", true) 
+			emit_signal("card_untilted")
 			start_fall_animation()
 		elif position.x <= center_position.x - threshold:
 			swiped_left = true
 			emit_signal("card_chosen", false)
+			emit_signal("card_untilted")
 			start_fall_animation()
 		else:
 			reset_card()
