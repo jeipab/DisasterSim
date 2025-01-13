@@ -7,13 +7,18 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_pvf02")
-metadata/_edit_group_ = true
 
 [node name="ResourceContainer" parent="." instance=ExtResource("4_resource")]
-position = Vector2(-30, 50)
+position = Vector2(27, 58)
 
 [node name="ScenarioText" parent="." instance=ExtResource("2_43ynp")]
-position = Vector2(0, 100)
+position = Vector2(-30, 110)
 
 [node name="CardSystem" parent="." instance=ExtResource("3_m7eef")]
-position = Vector2(0, 100)
+position = Vector2(11, 104)
+
+[node name="Center line" type="ColorRect" parent="."]
+visible = false
+offset_left = 960.0
+offset_right = 983.0
+offset_bottom = 1074.0
