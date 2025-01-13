@@ -1,18 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckurxv47s0715"]
+[gd_scene load_steps=5 format=3 uid="uid://cufbpbum6v5if"]
 
-[ext_resource type="Script" path="res://Resources/resource_indicator.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b73lqko38v1oy" path="res://Icons/resource-placeholder-frame-02.svg" id="2_by71q"]
-[ext_resource type="Texture2D" uid="uid://dv3xpta7o584r" path="res://Icons/resource-placeholder.svg" id="2_icon"]
-[ext_resource type="PackedScene" uid="uid://dfq3pfd0y86a2" path="res://Resources/resource_effect.tscn" id="4_ipjle"]
+[ext_resource type="Script" path="res://Resources/supplies_indicator.gd" id="1_ss2vi"]
+[ext_resource type="Texture2D" uid="uid://dv3xpta7o584r" path="res://Icons/resource-placeholder.svg" id="2_12u47"]
+[ext_resource type="Texture2D" uid="uid://b73lqko38v1oy" path="res://Icons/resource-placeholder-frame-02.svg" id="3_oufxf"]
+[ext_resource type="PackedScene" uid="uid://dfq3pfd0y86a2" path="res://Resources/resource_effect.tscn" id="4_fwjfu"]
 
-[node name="ResourceIndicator" type="Control"]
+[node name="StaminaIndicator" type="Control"]
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 400.0
 offset_bottom = 400.0
 scale = Vector2(0.25, 0.25)
-script = ExtResource("1_script")
+script = ExtResource("1_ss2vi")
 
 [node name="FillMask" type="TextureRect" parent="."]
 clip_children = 1
@@ -22,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_icon")
+texture = ExtResource("2_12u47")
 expand_mode = 1
 stretch_mode = 5
 
@@ -40,10 +40,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_by71q")
+texture = ExtResource("3_oufxf")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ResourceEffect" parent="." instance=ExtResource("4_ipjle")]
-position = Vector2(200, -188)
+[node name="ResourceEffect" parent="." instance=ExtResource("4_fwjfu")]
+position = Vector2(200, -752)
 scale = Vector2(0.5, 0.5)

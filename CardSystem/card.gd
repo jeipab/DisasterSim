@@ -13,6 +13,11 @@ var rotation_speed: float = 90.0
 var cursor_moved: bool = false
 var initial_animation: bool = true
 
+# Tilt tracking properties
+var tilt_threshold: float = 0.5  # Threshold for significant tilt (0.0 to 1.0)
+var is_tilted_right: bool = false
+var is_tilted_left: bool = false
+
 # Vertical movement properties
 var vertical_offset_speed := 400.0
 var max_vertical_offset := 50.0
@@ -29,6 +34,10 @@ var fall_velocity: Vector2 = Vector2.ZERO
 # Signals
 signal card_fell_off
 signal card_chosen(is_right)
+signal card_tilted_right  # New signal for right tilt
+signal card_tilted_left   # New signal for left tilt
+signal card_untilted      # New signal for returning to center
+
 
 func _ready() -> void:
 	center_position = position
@@ -36,6 +45,7 @@ func _ready() -> void:
 	left_position = center_position - Vector2(200, 0)
 	right_position = center_position + Vector2(200, 0)
 	initial_mouse_pos = get_global_mouse_position()
+
 
 func _process(delta: float) -> void:
 	if is_animating:
@@ -46,10 +56,12 @@ func _process(delta: float) -> void:
 		if cursor_moved:
 			follow_cursor(delta)
 
+
 func check_cursor_movement(_delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
 	if global_mouse_pos.distance_to(initial_mouse_pos) > 10:
 		cursor_moved = true
+
 
 func follow_cursor(delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
@@ -79,9 +91,29 @@ func follow_cursor(delta: float) -> void:
 	# Apply vertical offset
 	position.y = base_y_position + current_vertical_offset
 
-	# Tilt card
+	# Calculate tilt and emit signals based on tilt ratio
 	var tilt_ratio = (position.x - center_position.x) / (right_position.x - center_position.x)
 	rotation_degrees = tilt_ratio * max_tilt_angle
+	
+	# Check for right tilt
+	if tilt_ratio >= tilt_threshold and !is_tilted_right:
+		is_tilted_right = true
+		is_tilted_left = false
+		print("[Card] Tilted right, ratio: ", tilt_ratio)
+		emit_signal("card_tilted_right")
+	# Check for left tilt
+	elif tilt_ratio <= -tilt_threshold and !is_tilted_left:
+		is_tilted_left = true
+		is_tilted_right = false
+		print("[Card] Tilted left, ratio: ", tilt_ratio)
+		emit_signal("card_tilted_left")
+	# Check for return to center
+	elif abs(tilt_ratio) < tilt_threshold and (is_tilted_left or is_tilted_right):
+		is_tilted_left = false
+		is_tilted_right = false
+		print("[Card] Returned to center, ratio: ", tilt_ratio)
+		emit_signal("card_untilted")
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and not is_animating:
@@ -96,12 +128,14 @@ func _input(event: InputEvent) -> void:
 		else:
 			reset_card()
 
+
 func start_fall_animation() -> void:
 	is_animating = true
 	if swiped_right:
 		fall_velocity = Vector2(horizontal_fall_speed, fall_speed)
 	elif swiped_left:
 		fall_velocity = Vector2(-horizontal_fall_speed, fall_speed)
+
 
 func handle_fall_animation(delta: float) -> void:
 	position += fall_velocity * delta
@@ -116,6 +150,7 @@ func handle_fall_animation(delta: float) -> void:
 		print("[Card] Card fell off, emitting signal")
 		emit_signal("card_fell_off")
 		queue_free()
+
 
 func reset_card() -> void:
 	var position_tween = create_tween()

@@ -1,13 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvhhue32262p6"]
+[gd_scene load_steps=5 format=3 uid="uid://dvhhue32262p6"]
 
-[ext_resource type="PackedScene" uid="uid://ckurxv47s0715" path="res://Resources/resource_indicator.tscn" id="1_indicator"]
+[ext_resource type="PackedScene" uid="uid://4otno7l7d33r" path="res://Resources/stamina_indicator.tscn" id="1_stamina"]
+[ext_resource type="PackedScene" uid="uid://bfow7mypw86aw" path="res://Resources/morale_indicator.tscn" id="2_morale"]
+[ext_resource type="PackedScene" uid="uid://ble4cnhislr3q" path="res://Resources/property_indicator.tscn" id="3_property"]
+[ext_resource type="PackedScene" uid="uid://cufbpbum6v5if" path="res://Resources/supplies_indicator.tscn" id="4_supplies"]
 
 [node name="ResourceContainer" type="Node2D"]
 
 [node name="Grouped" type="Node2D" parent="."]
 position = Vector2(960, 0)
 
-[node name="Stamina" parent="Grouped" instance=ExtResource("1_indicator")]
+[node name="Stamina" parent="Grouped" instance=ExtResource("1_stamina")]
 offset_left = -225.0
 offset_top = 20.0
 offset_right = 175.0
@@ -15,7 +18,7 @@ offset_bottom = 420.0
 scale = Vector2(0.15, 0.15)
 metadata/_edit_group_ = true
 
-[node name="Morale" parent="Grouped" instance=ExtResource("1_indicator")]
+[node name="Morale" parent="Grouped" instance=ExtResource("2_morale")]
 offset_left = -75.0
 offset_top = 20.0
 offset_right = 325.0
@@ -23,7 +26,7 @@ offset_bottom = 420.0
 scale = Vector2(0.15, 0.15)
 metadata/_edit_group_ = true
 
-[node name="Property" parent="Grouped" instance=ExtResource("1_indicator")]
+[node name="Property" parent="Grouped" instance=ExtResource("3_property")]
 offset_left = 75.0
 offset_top = 20.0
 offset_right = 475.0
@@ -31,7 +34,7 @@ offset_bottom = 420.0
 scale = Vector2(0.15, 0.15)
 metadata/_edit_group_ = true
 
-[node name="Supplies" parent="Grouped" instance=ExtResource("1_indicator")]
+[node name="Supplies" parent="Grouped" instance=ExtResource("4_supplies")]
 offset_left = 225.0
 offset_top = 20.0
 offset_right = 625.0

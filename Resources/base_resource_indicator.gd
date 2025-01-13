@@ -1,3 +1,4 @@
+class_name BaseResourceIndicator
 extends Control
 
 @export var starting_value: float = 50.0
@@ -17,6 +18,9 @@ var current_color = Color.WHITE
 var target_color = Color.WHITE
 var is_color_transitioning = false
 
+# Resource identification
+@export var resource_type: String = "Base"
+
 @onready var color_fill = $FillMask/ColorFill
 
 func _ready() -> void:
@@ -27,14 +31,14 @@ func _ready() -> void:
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 	if card_system:
 		card_system.connect("card_spawned", _on_card_spawned)
-		print("[ResourceIndicator] ", name, " connected to CardSystem")
+		print("[ResourceIndicator] %s connected to CardSystem" % resource_type)
 	else:
-		print("[ResourceIndicator] ", name, " failed to find CardSystem")
+		print("[ResourceIndicator] %s failed to find CardSystem" % resource_type)
 
 func _on_card_spawned(card) -> void:
 	if !card.is_connected("card_chosen", _on_card_chosen):
 		card.connect("card_chosen", _on_card_chosen)
-		print("[ResourceIndicator] ", name, " connected to new card")
+		print("[ResourceIndicator] %s connected to new card" % resource_type)
 
 func _on_card_chosen(is_right: bool) -> void:
 	# Random change but influenced by choice direction
@@ -42,7 +46,7 @@ func _on_card_chosen(is_right: bool) -> void:
 	if !is_right:  # If it's a left swipe
 		change *= -1
 		
-	print("[ResourceIndicator] ", name, " responding to card choice, change: ", change)
+	print("[ResourceIndicator] %s responding to card choice, change: %s" % [resource_type, change])
 	
 	# Apply the change
 	modify_value(change)
