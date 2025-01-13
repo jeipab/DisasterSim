@@ -1,15 +1,5 @@
-extends Node
-
-enum Choice { LEFT, RIGHT };
-
-var inputs: Array[Choice] = [Choice.LEFT, Choice.RIGHT]
-var states: Array[int]
-var start_state: int = 1
-var final_states: Array[int]
-
-const cards: Dictionary = {
-	# Initial Phase (Preparation)
-	1: {
+{
+	"1": {
 		"phase": "initial",
 		"type": "regular",
 		"title": "You are home and you hear the news: a typhoon is approaching your area.",
@@ -150,8 +140,6 @@ const cards: Dictionary = {
 			}
 		}
 	},
-
-	# Crisis Phase (During Typhoon)
 	7: {
 		"phase": "crisis",
 		"type": "regular",
@@ -201,7 +189,6 @@ const cards: Dictionary = {
 		}
 	},
 
-	# Crisis Phase (Continued)
 	9: {
 		"phase": "crisis",
 		"type": "regular",
@@ -318,7 +305,6 @@ const cards: Dictionary = {
 		}
 	},
 
-	# Recovery Phase
 	16: {
 		"phase": "recovery",
 		"type": "regular",
@@ -436,7 +422,6 @@ const cards: Dictionary = {
 		}
 	},
 
-	# Concluding Phase
 	21: {
 		"phase": "concluding",
 		"type": "win",
@@ -474,17 +459,3 @@ const cards: Dictionary = {
 		"description": "Running out of supplies left you too weak to survive. The harsh conditions claimed your life."
 	}
 };
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	# Populate the states and the final states
-	for id in cards.keys():
-		var card = cards[id]
-		if card["phase"] == "concluding":
-			final_states.append(id)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
