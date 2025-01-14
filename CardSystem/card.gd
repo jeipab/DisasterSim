@@ -31,13 +31,17 @@ var center_position: Vector2
 var initial_mouse_pos: Vector2
 var fall_velocity: Vector2 = Vector2.ZERO
 
+# Property to store selected resources
+var selected_resources_left = []
+var selected_resources_right = []
+var currently_previewing_left = false
+
 # Signals
 signal card_fell_off
 signal card_chosen(is_right)
-signal card_tilted_right  # New signal for right tilt
-signal card_tilted_left   # New signal for left tilt
-signal card_untilted      # New signal for returning to center
-
+signal card_tilted_right
+signal card_tilted_left
+signal card_untilted
 
 func _ready() -> void:
 	center_position = position
@@ -45,7 +49,9 @@ func _ready() -> void:
 	left_position = center_position - Vector2(200, 0)
 	right_position = center_position + Vector2(200, 0)
 	initial_mouse_pos = get_global_mouse_position()
-
+	
+	# Select different resources for left and right when card spawns
+	select_resources_for_both_sides()
 
 func _process(delta: float) -> void:
 	if is_animating:
@@ -56,12 +62,41 @@ func _process(delta: float) -> void:
 		if cursor_moved:
 			follow_cursor(delta)
 
+func select_resources_for_both_sides() -> void:
+	var resource_container = get_tree().get_root().find_child("ResourceContainer", true, false)
+	if resource_container:
+		var all_resources = resource_container.get_node("Grouped").get_children()
+		
+		# Clear previous selections
+		selected_resources_left.clear()
+		selected_resources_right.clear()
+		
+		# Randomly select number of resources to affect for each side
+		var num_resources_left = randi_range(1, all_resources.size() - 1)
+		var num_resources_right = randi_range(1, all_resources.size() - 1)
+		
+		# Create shuffled copies of resources array for each side
+		var available_resources_left = all_resources.duplicate()
+		var available_resources_right = all_resources.duplicate()
+		available_resources_left.shuffle()
+		available_resources_right.shuffle()
+		
+		# Select resources for left swipe
+		for i in range(num_resources_left):
+			if i < available_resources_left.size():
+				selected_resources_left.append(available_resources_left[i])
+				print("[Card] Left swipe will affect: ", available_resources_left[i].resource_type)
+		
+		# Select resources for right swipe
+		for i in range(num_resources_right):
+			if i < available_resources_right.size():
+				selected_resources_right.append(available_resources_right[i])
+				print("[Card] Right swipe will affect: ", available_resources_right[i].resource_type)
 
 func check_cursor_movement(_delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
 	if global_mouse_pos.distance_to(initial_mouse_pos) > 10:
 		cursor_moved = true
-
 
 func follow_cursor(delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
@@ -99,37 +134,105 @@ func follow_cursor(delta: float) -> void:
 	if tilt_ratio >= tilt_threshold and !is_tilted_right:
 		is_tilted_right = true
 		is_tilted_left = false
-		print("[Card] Tilted right, ratio: ", tilt_ratio)
+		preview_affected_resources()
 		emit_signal("card_tilted_right")
 	# Check for left tilt
 	elif tilt_ratio <= -tilt_threshold and !is_tilted_left:
 		is_tilted_left = true
 		is_tilted_right = false
-		print("[Card] Tilted left, ratio: ", tilt_ratio)
+		preview_affected_resources()
 		emit_signal("card_tilted_left")
 	# Check for return to center
 	elif abs(tilt_ratio) < tilt_threshold and (is_tilted_left or is_tilted_right):
 		is_tilted_left = false
 		is_tilted_right = false
-		print("[Card] Returned to center, ratio: ", tilt_ratio)
+		clear_resource_preview()
 		emit_signal("card_untilted")
 
+func preview_affected_resources() -> void:
+	# Determine which set of resources to preview based on card tilt
+	var resources_to_preview = []
+	if is_tilted_left:
+		resources_to_preview = selected_resources_left
+		currently_previewing_left = true
+	elif is_tilted_right:
+		resources_to_preview = selected_resources_right
+		currently_previewing_left = false
+	
+	# Reset all resources first
+	for resource in get_all_resources():
+		resource.requires_update = false
+	
+	# Set preview for selected resources
+	for resource in resources_to_preview:
+		resource.requires_update = true
+		print("[Card] Previewing effect on: ", resource.resource_type)
+
+func clear_resource_preview() -> void:
+	for resource in get_all_resources():
+		if resource.requires_update:
+			print("[Card] Clearing preview for: ", resource.resource_type)
+		resource.requires_update = false
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and not is_animating:
 		if position.x >= center_position.x + threshold:
 			swiped_right = true
-			emit_signal("card_chosen", true) 
+			apply_to_selected_resources()  # Use pre-selected resources
+			emit_signal("card_chosen", true)
 			emit_signal("card_untilted")
 			start_fall_animation()
 		elif position.x <= center_position.x - threshold:
 			swiped_left = true
+			apply_to_selected_resources()  # Use pre-selected resources
 			emit_signal("card_chosen", false)
 			emit_signal("card_untilted")
 			start_fall_animation()
 		else:
 			reset_card()
 
+func apply_to_selected_resources() -> void:
+	# Apply changes to the appropriate set of resources
+	var resources_to_affect = []
+	if swiped_left:
+		resources_to_affect = selected_resources_left
+	elif swiped_right:
+		resources_to_affect = selected_resources_right
+	
+	# Reset all resources first
+	for resource in get_all_resources():
+		resource.requires_update = false
+	
+	# Apply changes to selected resources
+	for resource in resources_to_affect:
+		resource.requires_update = true
+		print("[Card] Applying change to: ", resource.resource_type)
+
+func get_all_resources() -> Array:
+	var resources = []
+	var resource_container = get_tree().get_root().find_child("ResourceContainer", true, false)
+	if resource_container:
+		resources = resource_container.get_node("Grouped").get_children()
+	return resources
+
+func select_affected_resources() -> void:
+	var resource_container = get_tree().get_root().find_child("ResourceContainer", true, false)
+	if resource_container:
+		var resources = resource_container.get_node("Grouped").get_children()
+		var num_resources_to_affect = randi_range(1, resources.size())
+		
+		# Reset all resources first
+		for resource in resources:
+			resource.requires_update = false
+		
+		# Randomly select resources to affect
+		var resources_to_affect = resources.duplicate()
+		resources_to_affect.shuffle()
+		
+		for i in range(num_resources_to_affect):
+			if i < resources_to_affect.size():
+				resources_to_affect[i].requires_update = true
+				print("[Card] Selected for update: ", resources_to_affect[i].resource_type)
 
 func start_fall_animation() -> void:
 	is_animating = true
@@ -137,7 +240,6 @@ func start_fall_animation() -> void:
 		fall_velocity = Vector2(horizontal_fall_speed, fall_speed)
 	elif swiped_left:
 		fall_velocity = Vector2(-horizontal_fall_speed, fall_speed)
-
 
 func handle_fall_animation(delta: float) -> void:
 	position += fall_velocity * delta
@@ -152,7 +254,6 @@ func handle_fall_animation(delta: float) -> void:
 		print("[Card] Card fell off, emitting signal")
 		emit_signal("card_fell_off")
 		queue_free()
-
 
 func reset_card() -> void:
 	var position_tween = create_tween()

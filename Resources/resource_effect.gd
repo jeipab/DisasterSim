@@ -1,33 +1,34 @@
 extends Node2D
 
-# Scale limits
-@export var min_scale: float = 0.8
-@export var max_scale: float = 1.2
+# Scale settings for different effect sizes based on change magnitudes
+# Small effect: <= 15 (base 10 + variance 5)
+# Medium effect: <= 30 (base change max)
+# Large effect: > 30 (base 30 + variance 15)
+@export var small_effect_scale: float = 0.15
+@export var medium_effect_scale: float = 0.45
+@export var large_effect_scale: float = 0.75
 
 # Movement properties
 var initial_position: Vector2
 var target_position: Vector2
-var move_amount: float = 700.0  # Amount to move down when tilted
-var down_animation_speed: float = 5.0  # Speed of downward movement
-var up_animation_speed: float = 8.0   # Faster speed for returning to center
-var current_animation_speed: float = 5.0  # Current animation speed
+var move_amount: float = 650.0
+var down_animation_speed: float = 5.0
+var up_animation_speed: float = 8.0
+var current_animation_speed: float = 5.0
 var is_moving: bool = false
+var is_down: bool = false
 
 @onready var texture_rect = $CircleTexture
 
 func _ready() -> void:
-	# Make sure the node can process input
 	set_process_input(true)
 	
-	# Store initial position
 	initial_position = position
 	target_position = initial_position
 	
-	# Set up the texture rect
 	texture_rect.pivot_offset = texture_rect.size / 2
 	texture_rect.set_anchors_preset(Control.PRESET_CENTER)
 	
-	# Connect to card signals
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 	if card_system:
 		print("[ResourceEffect] Found CardSystem, waiting for card")
@@ -41,44 +42,43 @@ func _on_card_spawned(card) -> void:
 		print("[ResourceEffect] Connected to card signals")
 
 func _on_card_tilted_left() -> void:
-	print("[ResourceEffect] Received left tilt")
-	move_down()
+	var parent = get_parent()
+	# Only move if parent resource indicator is selected
+	if parent and parent.has_method("get") and parent.requires_update:
+		print("[ResourceEffect] Moving down for: ", parent.resource_type)
+		move_down()
 
 func _on_card_tilted_right() -> void:
-	print("[ResourceEffect] Received right tilt")
-	move_down()
+	var parent = get_parent()
+	# Only move if parent resource indicator is selected
+	if parent and parent.has_method("get") and parent.requires_update:
+		print("[ResourceEffect] Moving down for: ", parent.resource_type)
+		move_down()
 
 func _on_card_untilted() -> void:
-	print("[ResourceEffect] Received untilt")
-	move_up()
+	# Move up regardless, to ensure we return to starting position
+	if is_down:
+		var parent = get_parent()
+		print("[ResourceEffect] Moving up for: ", parent.resource_type if parent else "unknown")
+		move_up()
 
 func move_down() -> void:
-	target_position = initial_position + Vector2(0, move_amount)
-	current_animation_speed = down_animation_speed
-	is_moving = true
+	if !is_down:
+		target_position = initial_position + Vector2(0, move_amount)
+		current_animation_speed = down_animation_speed
+		is_moving = true
+		is_down = true
 
 func move_up() -> void:
-	target_position = initial_position
-	current_animation_speed = up_animation_speed
-	is_moving = true
+	if is_down:
+		target_position = initial_position
+		current_animation_speed = up_animation_speed
+		is_moving = true
+		is_down = false
 
 func _process(delta: float) -> void:
 	if is_moving:
-		# Smoothly interpolate to target position
 		position = position.lerp(target_position, current_animation_speed * delta)
-		
-		# Check if we're close enough to stop moving
 		if position.distance_to(target_position) < 1.0:
 			position = target_position
 			is_moving = false
-
-func _input(event: InputEvent) -> void:
-	# Handle mouse click events for scale changes
-	if event is InputEventMouseButton and event.pressed:
-		var click_pos = event.position
-		if texture_rect.get_rect().has_point(click_pos):
-			randomize_scale()
-
-func randomize_scale() -> void:
-	var new_scale = randf_range(min_scale, max_scale)
-	scale = Vector2(new_scale, new_scale)
