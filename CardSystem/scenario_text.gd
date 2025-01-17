@@ -1,18 +1,8 @@
 extends Node2D
 
-# Array of sample scenarios for testing
-var scenarios = [
-	"A Category 4 typhoon is approaching the coast. Evacuation orders need to be issued within 12 hours.",
-	"The typhoon has damaged our emergency communications tower. A temporary fix might last a week.",
-	"Flooding has cut off access to the hospital district. We have rescue boats, but limited fuel.",
-	"Our typhoon shelters are at 120% capacity. The nearby school could be converted for temporary use.",
-	"Power lines are down in residential areas. Repair teams warn of electrocution risks from flood waters.",
-	"Food supplies are running low at evacuation centers. Military rations are available but expensive.",
-	"Three fishing villages are refusing evacuation orders. They want to protect their boats.",
-	"The weather station predicts a second typhoon forming. Current shelters won't withstand another hit.",
-	"Floodwaters are approaching a chemical plant. Emergency containment will require most of our workforce.",
-	"Foreign aid is arriving at the airport, but roads are flooded. Helicopter fuel is limited."
-]
+# Track current card and FSM state
+var current_card_id: int = 1  # Start with first card
+var fsm  # Reference to FSM node
 
 # Typing animation properties
 var current_text := ""
@@ -26,6 +16,12 @@ var is_typing := false
 @onready var text_label := $TextLabel
 
 func _ready() -> void:
+	# Find the FSM node
+	fsm = get_tree().get_root().find_child("FSM", true, false)
+	if not fsm:
+		push_error("FSM node not found!")
+		return
+		
 	# Connect to the card system's signals
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 	if card_system:
@@ -50,12 +46,20 @@ func _process(delta: float) -> void:
 				is_typing = false
 
 func set_new_scenario() -> void:
-	# Pick a random scenario
-	var new_text = scenarios[randi() % scenarios.size()]
-	while new_text == current_text:  # Avoid repeating the same scenario
-		new_text = scenarios[randi() % scenarios.size()]
+	if not fsm:
+		push_error("FSM not found when setting new scenario")
+		return
+		
+	# Get current card data
+	var card_data = fsm.cards.get(current_card_id)
+	if not card_data:
+		push_error("Card ID %d not found in FSM" % current_card_id)
+		return
 	
-	# Set up typing animation
+	# Set text based on card title
+	var new_text = card_data["title"]
+	
+	# Set up typing animation for new text
 	current_text = new_text
 	target_text = new_text
 	display_text = ""
@@ -68,6 +72,24 @@ func _on_card_spawned(card) -> void:
 		card.connect("card_chosen", _on_card_chosen)
 		print("[ScenarioText] Connected to new card")
 
-func _on_card_chosen(_is_right: bool) -> void:
-	print("[ScenarioText] Card chosen, setting new scenario")
+func _on_card_chosen(is_right: bool) -> void:
+	if not fsm:
+		push_error("FSM not found when handling choice")
+		return
+		
+	var card_data = fsm.cards.get(current_card_id)
+	if not card_data:
+		push_error("Current card ID %d not found in FSM" % current_card_id)
+		return
+	
+	# Get the next card ID based on choice
+	var choice = "right" if is_right else "left"
+	if card_data["type"] == "regular" and card_data["choices"].has(choice):
+		current_card_id = card_data["choices"][choice]["next_card"]
+	elif card_data["type"] in ["win", "lose"]:
+		# Handle end states - you might want to trigger a game over screen here
+		print("Game Over - ", "Victory!" if card_data["type"] == "win" else "Defeat!")
+		return
+		
+	print("[ScenarioText] Moving to card ", current_card_id)
 	set_new_scenario()

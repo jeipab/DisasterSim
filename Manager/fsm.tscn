@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl8fve1bsmn8a"]
+
+[ext_resource type="Script" path="res://Manager/fsm.gd" id="1_n41cn"]
+
+[node name="Fsm" type="Node2D"]
+script = ExtResource("1_n41cn")
