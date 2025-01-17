@@ -44,11 +44,32 @@ func _ready() -> void:
 # This method will be called when the signal is emitted
 func _on_new_card_needed(texture: Texture) -> void:
 	spawn_new_card(texture)
+	
+# Get texture from FSM card data
+func get_card_texture(card_id: int) -> Texture:
+	if not fsm:
+		push_error("[CardSystem] Cannot get texture - FSM not initialized")
+		return null
+		
+	var card_data = fsm.cards.get(card_id)
+	if not card_data:
+		push_error("[CardSystem] Card ID %d not found in FSM" % card_id)
+		return null
+		
+	var image_path = card_data["image"]
+	print("[CardSystem] Loading texture from path:", image_path)
+	return load(image_path)
 
 # Spawn a new card when the current one falls
 func spawn_new_card(texture: Texture) -> void:
 	if not fsm:
 		push_error("[CardSystem] Cannot spawn card - FSM not initialized")
+		return
+	
+	# Get texture from current card data
+	var card_texture = get_card_texture(current_card_id)
+	if not card_texture:
+		push_error("[CardSystem] Failed to load texture for card %d" % current_card_id)
 		return
 	
 	var new_card = card_scene.instantiate()
@@ -61,22 +82,15 @@ func spawn_new_card(texture: Texture) -> void:
 
 	# Check if the AnimatedSprite2D exists
 	if animated_sprite:
-		# Get the current frames (SpriteFrames resource)
 		var sprite_frames = SpriteFrames.new()
-		
-		if texture:
-			# Add the texture as the first frame in the "default" animation
-			sprite_frames.add_animation("default")
-			sprite_frames.add_frame("default", texture)
-	
-		# Assign the new SpriteFrames to the AnimatedSprite2D
+		sprite_frames.add_animation("default")
+		sprite_frames.add_frame("default", card_texture)
 		animated_sprite.sprite_frames = sprite_frames
-
-		# Play the "default" animation
 		animated_sprite.play("default")
-		animated_sprite.stop()  # Pause the animation at the initial frame
+		animated_sprite.stop()
+		print("[CardSystem] Set card texture for card ID:", current_card_id)
 	else:
-		print("Error: AnimatedSprite2D or texture node not found in the new card.")
+		push_error("[CardSystem] Error: AnimatedSprite2D not found in new card")
 		
 	# Connect the card's signal to Base's animate() function
 	new_card.connect("card_fell_off", Callable(self, "_on_card_fell_off"))
@@ -86,7 +100,7 @@ func spawn_new_card(texture: Texture) -> void:
 	
 	# Spawn new mask with shadow whenever a new card is spawned
 	mask_count += 1
-	print("[DEBUG] Spawning new mask with card (Count: ", mask_count, ")")
+	print("[CardSystem] Spawning new mask with card (Count: ", mask_count, ")")
 	
 	var new_mask = mask_scene.instantiate()
 	add_child(new_mask)
