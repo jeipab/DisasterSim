@@ -15,23 +15,34 @@ var is_typing := false
 
 @onready var text_label := $TextLabel
 
+# Initialize with FSM reference
+func initialize(fsm_node) -> void:
+	fsm = fsm_node
+	if fsm:
+		print("[ScenarioText] Initialized with FSM")
+		print("[ScenarioText] Available cards: ", fsm.cards.keys())
+		set_new_scenario()  # Set initial text
+	else:
+		push_error("[ScenarioText] Failed to initialize - no FSM provided")
+
 func _ready() -> void:
-	# Find the FSM node
-	fsm = get_tree().get_root().find_child("FSM", true, false)
+	# Find the FSM node if not already initialized
 	if not fsm:
-		push_error("FSM node not found!")
-		return
-		
+		fsm = get_tree().get_root().find_child("Fsm", true, false)
+		if fsm:
+			print("[ScenarioText] Found FSM node")
+			set_new_scenario()
+		else:
+			push_error("[ScenarioText] FSM node not found!")
+			return
+	
 	# Connect to the card system's signals
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 	if card_system:
 		card_system.connect("card_spawned", _on_card_spawned)
 		print("[ScenarioText] Connected to CardSystem")
 	else:
-		print("[ScenarioText] Failed to find CardSystem")
-	
-	# Set initial scenario
-	set_new_scenario()
+		push_error("[ScenarioText] Failed to find CardSystem")
 
 func _process(delta: float) -> void:
 	if is_typing:
@@ -47,14 +58,17 @@ func _process(delta: float) -> void:
 
 func set_new_scenario() -> void:
 	if not fsm:
-		push_error("FSM not found when setting new scenario")
+		push_error("[ScenarioText] FSM not found when setting new scenario")
 		return
-		
+	
 	# Get current card data
+	print("[ScenarioText] Attempting to get card data for ID:", current_card_id)
 	var card_data = fsm.cards.get(current_card_id)
 	if not card_data:
-		push_error("Card ID %d not found in FSM" % current_card_id)
+		push_error("[ScenarioText] Card ID %d not found in FSM" % current_card_id)
 		return
+	
+	print("[ScenarioText] Setting text for card %d: %s" % [current_card_id, card_data["title"]])
 	
 	# Set text based on card title
 	var new_text = card_data["title"]
@@ -68,28 +82,31 @@ func set_new_scenario() -> void:
 	type_timer = 0.0
 
 func _on_card_spawned(card) -> void:
+	print("[ScenarioText] New card spawned, connecting signals")
 	if !card.is_connected("card_chosen", _on_card_chosen):
 		card.connect("card_chosen", _on_card_chosen)
-		print("[ScenarioText] Connected to new card")
+		print("[ScenarioText] Connected to new card's chosen signal")
 
 func _on_card_chosen(is_right: bool) -> void:
+	print("[ScenarioText] Card choice made:", "right" if is_right else "left")
+	
 	if not fsm:
-		push_error("FSM not found when handling choice")
+		push_error("[ScenarioText] FSM not found when handling choice")
 		return
-		
+	
 	var card_data = fsm.cards.get(current_card_id)
 	if not card_data:
-		push_error("Current card ID %d not found in FSM" % current_card_id)
+		push_error("[ScenarioText] Current card ID %d not found in FSM" % current_card_id)
 		return
 	
 	# Get the next card ID based on choice
 	var choice = "right" if is_right else "left"
 	if card_data["type"] == "regular" and card_data["choices"].has(choice):
-		current_card_id = card_data["choices"][choice]["next_card"]
+		var next_card = card_data["choices"][choice]["next_card"]
+		print("[ScenarioText] Moving from card %d to card %d" % [current_card_id, next_card])
+		current_card_id = next_card
 	elif card_data["type"] in ["win", "lose"]:
-		# Handle end states - you might want to trigger a game over screen here
-		print("Game Over - ", "Victory!" if card_data["type"] == "win" else "Defeat!")
+		print("[ScenarioText] Game Over - ", "Victory!" if card_data["type"] == "win" else "Defeat!")
 		return
-		
-	print("[ScenarioText] Moving to card ", current_card_id)
+	
 	set_new_scenario()
