@@ -13,11 +13,30 @@ signal card_spawned(card)  # Add this at the top with other signals
 # Variable to track the animated sprite
 var animated_sprite = null
 var mask_count = 0  # Add counter for debugging
+var current_card_id: int = 1  # Track current card ID
+var fsm = null  # FSM reference
+
+func initialize(fsm_node) -> void:
+	fsm = fsm_node
+	if fsm:
+		print("[CardSystem] Initialized with FSM")
+		current_card_id = fsm.start_state
+	else:
+		push_error("[CardSystem] Failed to initialize - no FSM provided")
 
 # Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	# Connect the signal emitted by the base to the method that will spawn a new card
 	base_node.connect("new_card_needed", Callable(self, "_on_new_card_needed"))
+	
+	# If FSM wasn't provided via initialize, try to find it
+	if not fsm:
+		fsm = get_tree().get_root().find_child("Fsm", true, false)
+		if fsm:
+			print("[CardSystem] Found FSM node")
+			current_card_id = fsm.start_state
+		else:
+			push_error("[CardSystem] FSM node not found!")
 	
 	# Spawn the first card
 	spawn_first_card()
@@ -28,6 +47,10 @@ func _on_new_card_needed(texture: Texture) -> void:
 
 # Spawn a new card when the current one falls
 func spawn_new_card(texture: Texture) -> void:
+	if not fsm:
+		push_error("[CardSystem] Cannot spawn card - FSM not initialized")
+		return
+	
 	var new_card = card_scene.instantiate()
 	add_child(new_card)
 	# Position the new card where the old one was
@@ -84,8 +107,11 @@ func spawn_new_card(texture: Texture) -> void:
 	choice_text.name = "ChoiceText"
 	choice_text.position = Vector2(960, 540)
 	choice_text.scale = Vector2(0.25, 0.25)
+	choice_text.initialize(fsm)  # Initialize with FSM
+	choice_text.sync_with_scenario(current_card_id)  # Sync with current card
+	choice_text.connect("choice_made", _on_choice_made)  # Connect choice signal
 	
-	print("[DEBUG] Mask and shadow created successfully")
+	print("[CardSystem] Mask and shadow created successfully with card ID:", current_card_id)
 	
 func _on_card_fell_off() -> void:
 	base_node.animate()  # Programmatically trigger the base animation
@@ -101,3 +127,17 @@ func _input(event: InputEvent) -> void:
 		# Resume the animation if the AnimatedSprite2D exists
 		if animated_sprite and not animated_sprite.is_playing():
 			animated_sprite.play()
+			
+# Handle choices and update current card ID
+func _on_choice_made(is_right: bool) -> void:
+	if not fsm:
+		push_error("[CardSystem] Cannot handle choice - FSM not initialized")
+		return
+		
+	print("[CardSystem] Choice made:", "right" if is_right else "left")
+	var card_data = fsm.cards.get(current_card_id)
+	if card_data and card_data["type"] == "regular":
+		var choice = "right" if is_right else "left"
+		if card_data["choices"].has(choice):
+			current_card_id = card_data["choices"][choice]["next_card"]
+			print("[CardSystem] Moving to card ID:", current_card_id)

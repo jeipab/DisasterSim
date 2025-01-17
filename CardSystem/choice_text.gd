@@ -1,13 +1,8 @@
 extends Node2D
 
-var choice_pairs = [
-	{"left": "No", "right": "Yes"},
-	{"left": "Reject Proposal", "right": "Accept Offer"},
-	{"left": "Absolutely Definitely Not Ever", "right": "Without Any Doubt Yes Indeed"},
-	{"left": "Nope", "right": "Sure"},
-	{"left": "This is completely unacceptable", "right": "I wholeheartedly agree with this"},
-	{"left": "Never mind", "right": "Go ahead"}
-]
+var fsm  # Reference to FSM node
+var current_card_id: int = 1  # Start with first card
+signal choice_made(is_right: bool)  # Add signal for choice
 
 # Animation properties
 var is_animating := false
@@ -15,14 +10,13 @@ var rise_speed := 10000.0
 var fade_speed := 2.0
 var initial_opacity := 1.0
 
-var previous_pair := {"left": "", "right": ""}
 var current_pair := {"left": "", "right": ""}
 
 # Positioning properties
 var text_scale := Vector2(3.0, 3.0)
 var base_y_position := -2200.0  # Starting position
-var base_max_y_offset := 1680.0  # Base maximum distance to move up
-var additional_line_offset := -160.0  # Additional offset per line
+var base_max_y_offset := 1800.0  # Base maximum distance to move up
+var additional_line_offset := -150  # Additional offset per line
 var sensitivity := 0.3          # Matches shadow's sensitivity
 var horizontal_smooth_speed := 10.0
 var base_x_position := -650
@@ -55,6 +49,14 @@ var cursor_moved := false
 var last_mouse_pos := Vector2()
 var current_side := "center"
 
+func initialize(fsm_node) -> void:
+	fsm = fsm_node
+	if fsm:
+		print("[ChoiceText] Initialized with FSM")
+		update_choices()  # Set initial choices
+	else:
+		push_error("[ChoiceText] Failed to initialize - no FSM provided")
+
 func count_lines(text: String) -> int:
 	if text.is_empty():
 		return 1
@@ -75,9 +77,21 @@ func get_adjusted_max_y_offset(text: String) -> float:
 	var lines = count_lines(text)
 	return base_max_y_offset + ((lines - 1) * additional_line_offset)
 
-func _ready() -> void:
-	randomize()
+func sync_with_scenario(card_id: int) -> void:
+	print("[ChoiceText] Syncing with scenario, card ID:", card_id)
+	current_card_id = card_id
 	update_choices()
+
+func _ready() -> void:
+	# Find the FSM node if not already initialized
+	if not fsm:
+		fsm = get_tree().get_root().find_child("Fsm", true, false)
+		if fsm:
+			print("[ChoiceText] Found FSM node")
+			update_choices()
+		else:
+			push_error("[ChoiceText] FSM node not found!")
+			return
 	
 	choice_label.position = Vector2(text_base_x, base_y_position)
 	choice_label.scale = text_scale
@@ -90,6 +104,7 @@ func _ready() -> void:
 	var mask_node = shadow_node.get_parent()
 	if mask_node:
 		mask_node.connect("mask_disappeared", Callable(self, "_on_mask_disappeared"))
+		print("[ChoiceText] Connected to mask signals")
 	
 	last_mouse_pos = get_viewport().get_mouse_position()
 
@@ -111,7 +126,7 @@ func update_choice_position_and_text(delta: float) -> void:
 	var screen_center = screen_size.x / 2
 	var mouse_pos = get_viewport().get_mouse_position()
 	
-	# Calculate horizontal distance from center (matching shadow's calculation)
+	# Calculate horizontal distance from center
 	var horizontal_distance = abs(mouse_pos.x - screen_center)
 	var max_horizontal_distance = screen_size.x * sensitivity
 	var normalized_distance = clamp(horizontal_distance / max_horizontal_distance, 0, 1)
@@ -137,10 +152,6 @@ func update_choice_position_and_text(delta: float) -> void:
 	# Smoothly interpolate vertical position
 	current_vertical_offset = lerp(current_vertical_offset, target_vertical_offset, delta * current_speed)
 	
-	# Snap to base position if very close to center
-	if is_near_center and abs(current_vertical_offset) < 5.0:
-		current_vertical_offset = 0.0
-	
 	# Calculate horizontal movement
 	var direction = sign(mouse_pos.x - screen_center)
 	var max_offset = max_x_offset_right if direction > 0 else max_x_offset_left
@@ -165,9 +176,6 @@ func update_choice_position_and_text(delta: float) -> void:
 			choice_label.position = Vector2(text_base_x + text_margin, choice_label.position.y)
 		choice_label.text = "[right]" + current_pair.right + "[/right]"
 
-	if is_animating:
-		choice_label.modulate.a = max(0, choice_label.modulate.a - fade_speed * delta)
-
 func counter_rotate() -> void:
 	var mask_node = get_parent().get_parent()
 	if mask_node:
@@ -185,13 +193,30 @@ func handle_rise_animation(delta: float) -> void:
 		queue_free()
 
 func update_choices() -> void:
-	var new_pair
-	while true:
-		new_pair = choice_pairs[randi() % choice_pairs.size()]
-		if new_pair.left != previous_pair.left and new_pair.right != previous_pair.right:
-			break
-	current_pair = new_pair
-	previous_pair = new_pair
+	if not fsm:
+		push_error("[ChoiceText] FSM not found when updating choices")
+		return
+		
+	print("[ChoiceText] Updating choices for card ID:", current_card_id)
+	var card_data = fsm.cards.get(current_card_id)
+	if not card_data:
+		push_error("[ChoiceText] Card ID %d not found in FSM" % current_card_id)
+		return
+		
+	if card_data["type"] != "regular":
+		print("[ChoiceText] Card %d is not a regular card (type: %s)" % [current_card_id, card_data["type"]])
+		return
+		
+	if not card_data["choices"].has("left") or not card_data["choices"].has("right"):
+		push_error("[ChoiceText] Card %d missing left or right choice" % current_card_id)
+		return
+		
+	# Update choices from card data
+	current_pair = {
+		"left": card_data["choices"]["left"]["text"],
+		"right": card_data["choices"]["right"]["text"]
+	}
+	print("[ChoiceText] Updated choices - Left: %s, Right: %s" % [current_pair.left, current_pair.right])
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
@@ -200,9 +225,21 @@ func _input(event: InputEvent) -> void:
 		var threshold = 150
 		
 		if abs(mouse_pos.x - screen_center) > threshold:
+			# Emit signal for choice made
+			var is_right = mouse_pos.x > screen_center
+			emit_signal("choice_made", is_right)
 			start_rise_animation()
 
 func _on_mask_disappeared() -> void:
-	print("Mask disappeared. Updating choices...")
-	update_choices()
+	print("[ChoiceText] Mask disappeared, moving to next card")
+	if fsm:
+		var card_data = fsm.cards.get(current_card_id)
+		if card_data and card_data["type"] == "regular":
+			# Get next card ID based on last choice
+			var choice = "right" if current_side == "right" else "left"
+			if card_data["choices"].has(choice):
+				current_card_id = card_data["choices"][choice]["next_card"]
+				print("[ChoiceText] Moving to card:", current_card_id)
+				update_choices()
+	
 	is_animating = false
