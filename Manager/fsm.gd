@@ -202,7 +202,7 @@ const cards: Dictionary = {
 				"text": "Focus on personal needs and preparedness.",
 				"next_card": 13,
 				"resources": {
-				"supplies": 10,
+					"supplies": 10,
 					"morale": -5
 				}
 			}

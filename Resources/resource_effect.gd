@@ -1,12 +1,9 @@
 extends Node2D
 
-# Scale settings for different effect sizes based on change magnitudes
-# Small effect: <= 15 (base 10 + variance 5)
-# Medium effect: <= 30 (base change max)
-# Large effect: > 30 (base 30 + variance 15)
-@export var small_effect_scale: float = 0.15
-@export var medium_effect_scale: float = 0.45
-@export var large_effect_scale: float = 0.75
+# Scale settings for different effect sizes
+@export var small_effect_scale: float = 0.15  # <= 5
+@export var medium_effect_scale: float = 0.45  # <= 10
+@export var large_effect_scale: float = 0.75   # > 10
 
 # Movement properties
 var initial_position: Vector2
@@ -21,46 +18,42 @@ var is_down: bool = false
 @onready var texture_rect = $CircleTexture
 
 func _ready() -> void:
-	set_process_input(true)
-	
 	initial_position = position
 	target_position = initial_position
 	
 	texture_rect.pivot_offset = texture_rect.size / 2
 	texture_rect.set_anchors_preset(Control.PRESET_CENTER)
-	
-	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
-	if card_system:
-		print("[ResourceEffect] Found CardSystem, waiting for card")
-		card_system.connect("card_spawned", _on_card_spawned)
-
-func _on_card_spawned(card) -> void:
-	if !card.is_connected("card_tilted_left", _on_card_tilted_left):
-		card.connect("card_tilted_left", _on_card_tilted_left)
-		card.connect("card_tilted_right", _on_card_tilted_right)
-		card.connect("card_untilted", _on_card_untilted)
-		print("[ResourceEffect] Connected to card signals")
 
 func _on_card_tilted_left() -> void:
 	var parent = get_parent()
-	# Only move if parent resource indicator is selected
-	if parent and parent.has_method("get") and parent.requires_update:
-		print("[ResourceEffect] Moving down for: ", parent.resource_type)
+	if parent and parent.has_method("get_value") and parent.requires_update and parent.left_change != 0:
 		move_down()
+		scale_effect(abs(parent.left_change))
 
 func _on_card_tilted_right() -> void:
 	var parent = get_parent()
-	# Only move if parent resource indicator is selected
-	if parent and parent.has_method("get") and parent.requires_update:
-		print("[ResourceEffect] Moving down for: ", parent.resource_type)
+	if parent and parent.has_method("get_value") and parent.requires_update and parent.right_change != 0:
 		move_down()
+		scale_effect(abs(parent.right_change))
 
 func _on_card_untilted() -> void:
-	# Move up regardless, to ensure we return to starting position
 	if is_down:
-		var parent = get_parent()
-		print("[ResourceEffect] Moving up for: ", parent.resource_type if parent else "unknown")
 		move_up()
+		reset_scale()
+
+func scale_effect(change_magnitude: float) -> void:
+	var new_scale: float
+	if change_magnitude <= 5:
+		new_scale = small_effect_scale
+	elif change_magnitude <= 10:
+		new_scale = medium_effect_scale
+	else:
+		new_scale = large_effect_scale
+	
+	scale = Vector2(new_scale, new_scale)
+
+func reset_scale() -> void:
+	scale = Vector2(0.5, 0.5)  # Default scale
 
 func move_down() -> void:
 	if !is_down:

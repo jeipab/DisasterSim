@@ -66,24 +66,29 @@ func spawn_new_card(texture: Texture) -> void:
 		push_error("[CardSystem] Cannot spawn card - FSM not initialized")
 		return
 	
-	# Get texture from current card data
-	var card_texture = get_card_texture(current_card_id)
-	if not card_texture:
-		push_error("[CardSystem] Failed to load texture for card %d" % current_card_id)
+	# Get card data to verify it exists and is valid
+	var card_data = fsm.cards.get(current_card_id)
+	if not card_data:
+		push_error("[CardSystem] Card ID %d not found in FSM" % current_card_id)
 		return
+		
+	if card_data["type"] != "regular":
+		print("[CardSystem] Card %d is not a regular card (type: %s)" % 
+			  [current_card_id, card_data["type"]])
 	
+	# Create new card instance
 	var new_card = card_scene.instantiate()
 	add_child(new_card)
-	# Position the new card where the old one was
-	new_card.position = initial_mask_position  # Use the same position as mask
+	new_card.position = initial_mask_position 
 	
-	# Get the AnimatedSprite2D node (adjust path as needed)
+	 # Set up card sprite
 	var animated_sprite = new_card.get_node("AnimatedSprite2D")  # Path inside Card
-
-	# Check if the AnimatedSprite2D exists
 	if animated_sprite:
 		var sprite_frames = SpriteFrames.new()
 		sprite_frames.add_animation("default")
+		
+		# Load the texture from the path
+		var card_texture = load(card_data["image"])
 		sprite_frames.add_frame("default", card_texture)
 		animated_sprite.sprite_frames = sprite_frames
 		animated_sprite.play("default")
@@ -92,12 +97,14 @@ func spawn_new_card(texture: Texture) -> void:
 	else:
 		push_error("[CardSystem] Error: AnimatedSprite2D not found in new card")
 		
-	# Connect the card's signal to Base's animate() function
+	# Connect signals and notify systems
 	new_card.connect("card_fell_off", Callable(self, "_on_card_fell_off"))
-	
-	# Emit signal that new card was spawned
 	emit_signal("card_spawned", new_card)
 	
+	# Create mask and associated elements
+	create_mask_with_elements(new_card)
+
+func create_mask_with_elements(card) -> void:
 	# Spawn new mask with shadow whenever a new card is spawned
 	mask_count += 1
 	print("[CardSystem] Spawning new mask with card (Count: ", mask_count, ")")
@@ -121,9 +128,11 @@ func spawn_new_card(texture: Texture) -> void:
 	choice_text.name = "ChoiceText"
 	choice_text.position = Vector2(960, 540)
 	choice_text.scale = Vector2(0.25, 0.25)
-	choice_text.initialize(fsm)  # Initialize with FSM
-	choice_text.sync_with_scenario(current_card_id)  # Sync with current card
-	choice_text.connect("choice_made", _on_choice_made)  # Connect choice signal
+	
+	# Initialize with current card data
+	choice_text.initialize(fsm) 
+	choice_text.sync_with_scenario(current_card_id) 
+	choice_text.connect("choice_made", _on_choice_made)
 	
 	print("[CardSystem] Mask and shadow created successfully with card ID:", current_card_id)
 	
@@ -150,8 +159,13 @@ func _on_choice_made(is_right: bool) -> void:
 		
 	print("[CardSystem] Choice made:", "right" if is_right else "left")
 	var card_data = fsm.cards.get(current_card_id)
-	if card_data and card_data["type"] == "regular":
+	if not card_data:
+		push_error("[CardSystem] Current card ID %d not found in FSM" % current_card_id)
+		return
+		
+	if card_data["type"] == "regular":
 		var choice = "right" if is_right else "left"
 		if card_data["choices"].has(choice):
+			# Update current card before spawning new one
 			current_card_id = card_data["choices"][choice]["next_card"]
 			print("[CardSystem] Moving to card ID:", current_card_id)
