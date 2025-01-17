@@ -12,6 +12,7 @@ const cards: Dictionary = {
 	1: {
 		"phase": "initial",
 		"type": "regular",
+		"image": "res://Art/test-squares-01.png",
 		"title": "You are home and you hear the news: a typhoon is approaching your area.",
 		"choices": {
 			"left": {
@@ -36,6 +37,7 @@ const cards: Dictionary = {
 	2: {
 		"phase": "initial",
 		"type": "regular",
+		"image": "res://Art/test-squares-02.png",
 		"title": "You gathered your supplies, but you realized that you need to secure and protect your home.",
 		"choices": {
 			"left": {
@@ -60,6 +62,7 @@ const cards: Dictionary = {
 	3: {
 		"phase": "initial",
 		"type": "regular",
+		"image": "res://Art/test-squares-03.png",
 		"title": "You helped your neighbor and they are grateful for your help. Now, the typhoon is getting closer.",
 		"choices": {
 			"left": {
@@ -83,6 +86,7 @@ const cards: Dictionary = {
 	4: {
 		"phase": "initial",
 		"type": "regular",
+		"image": "res://Art/test-squares-04.png",
 		"title": "Your home is now secured, but you need to decide if you will stay at your home or prepare to evacuate.",
 		"choices": {
 			"left": {
@@ -106,6 +110,7 @@ const cards: Dictionary = {
 	5: {
 		"phase": "initial",
 		"type": "regular",
+		"image": "res://Art/test-squares-01.png",
 		"title": "Your supplies are now packed in a bag, but you didn’t secure your home. The typhoon is almost here.",
 		"choices": {
 			"left": {
@@ -129,6 +134,7 @@ const cards: Dictionary = {
 	6: {
 		"phase": "initial",
 		"type": "regular",
+		"image": "res://Art/test-squares-02.png",
 		"title": "You all agreed to stay at home, but you realized that you need to secure and protect your houses.",
 		"choices": {
 			"left": {
@@ -155,6 +161,7 @@ const cards: Dictionary = {
 	7: {
 		"phase": "crisis",
 		"type": "regular",
+		"image": "res://Art/test-squares-03.png",
 		"title": "You stayed at home, but there’s a flood rising...",
 		"choices": {
 			"left": {
@@ -180,6 +187,7 @@ const cards: Dictionary = {
 	8: {
 		"phase": "crisis",
 		"type": "regular",
+		"image": "res://Art/test-squares-04.png",
 		"title": "You’ve reached an organized evacuation center with sufficient resources.",
 		"choices": {
 			"left": {
@@ -205,6 +213,7 @@ const cards: Dictionary = {
 	9: {
 		"phase": "crisis",
 		"type": "regular",
+		"image": "res://Art/test-squares-01.png",
 		"title": "You’re staying at home, but the floodwaters are rising higher, and food is running out.",
 		"choices": {
 			"left": {
@@ -228,6 +237,7 @@ const cards: Dictionary = {
 	10: {
 		"phase": "crisis",
 		"type": "regular",
+		"image": "res://Art/test-squares-2.png",
 		"title": "You evacuated quickly but forgot key supplies in your rush.",
 		"choices": {
 			"left": {
@@ -251,6 +261,7 @@ const cards: Dictionary = {
 	11: {
 		"phase": "crisis",
 		"type": "regular",
+		"image": "res://Art/test-squares-3.png",
 		"title": "You chose to stay at home despite rising risks.",
 		"choices": {
 			"left": {
@@ -274,6 +285,7 @@ const cards: Dictionary = {
 	12: {
 		"phase": "crisis",
 		"type": "regular",
+		"image": "res://Art/test-squares-4.png",
 		"title": "You participate in activities at the evacuation center and follow instructions.",
 		"choices": {
 			"left": {
@@ -297,6 +309,7 @@ const cards: Dictionary = {
 	13: {
 		"phase": "crisis",
 		"type": "regular",
+		"image": "res://Art/test-squares-1.png",
 		"title": "You decide to focus on your own needs and preparations.",
 		"choices": {
 			"left": {
@@ -322,6 +335,7 @@ const cards: Dictionary = {
 	16: {
 		"phase": "recovery",
 		"type": "regular",
+		"image": "res://Art/test-squares-2.png",
 		"title": "You emerge from the debris, but you're facing resource scarcity.",
 		"choices": {
 			"left": {
@@ -345,6 +359,7 @@ const cards: Dictionary = {
 	17: {
 		"phase": "recovery",
 		"type": "regular",
+		"image": "res://Art/test-squares-3.png",
 		"title": "You found some supplies, but now you must contend with unstable structures.",
 		"choices": {
 			"left": {
@@ -369,6 +384,7 @@ const cards: Dictionary = {
 	18: {
 		"phase": "recovery",
 		"type": "regular",
+		"image": "res://Art/test-squares-4.png",
 		"title": "You’re heading toward the safe zone, but you encounter another group of survivors.",
 		"choices": {
 			"left": {
@@ -392,6 +408,7 @@ const cards: Dictionary = {
 	19: {
 		"phase": "recovery",
 		"type": "regular",
+		"image": "res://Art/test-squares-1.png",
 		"title": "You’ve reached a temporary refuge, but disease is spreading in the area.",
 		"choices": {
 			"left": {
@@ -415,6 +432,7 @@ const cards: Dictionary = {
 	20: {
 		"phase": "recovery",
 		"type": "regular",
+		"image": "res://Art/test-squares-2.png",
 		"title": "You continue your journey toward safety, but the terrain is difficult.",
 		"choices": {
 			"left": {
@@ -440,36 +458,42 @@ const cards: Dictionary = {
 	21: {
 		"phase": "concluding",
 		"type": "win",
+		"image": "res://Art/test-squares-3.png",
 		"title": "Safe Haven Secured",
 		"description": "You finally reach an evacuation center. Rescue personnel greet you with food, water, and medical care. You survived and reunited with your community."
 	},
 	22: {
 		"phase": "concluding",
 		"type": "win",
+		"image": "res://Art/test-squares-4.png",
 		"title": "Community Leader",
 		"description": "Your leadership and resourcefulness allowed a group of survivors to reach safety. You inspire others with your courage."
 	},
 	23: {
 		"phase": "concluding",
 		"type": "win",
+		"image": "res://Art/test-squares-1.png",
 		"title": "Rebuilding Starts Here",
 		"description": "You balanced resource management and property repairs. Aid arrives, and you begin rebuilding your community."
 	},
 	24: {
 		"phase": "concluding",
 		"type": "lose",
+		"image": "res://Art/test-squares-2.png",
 		"title": "Despair and Isolation",
 		"description": "You lost the will to continue. Supplies ran out, and rescue never arrived. A tragic end to your story."
 	},
 	25: {
 		"phase": "concluding",
 		"type": "lose",
+		"image": "res://Art/test-squares-3.png",
 		"title": "Property Over People",
 		"description": "You focused on your property and neglected survival. The storm claimed everything you held dear."
 	},
 	26: {
 		"phase": "concluding",
 		"type": "lose",
+		"image": "res://Art/test-squares-4.png",
 		"title": "Starvation and Dehydration",
 		"description": "Running out of supplies left you too weak to survive. The harsh conditions claimed your life."
 	}
