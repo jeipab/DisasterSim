@@ -13,6 +13,7 @@ script = ExtResource("1_bfm26")
 [node name="Base" parent="." instance=ExtResource("5_bya8a")]
 
 [node name="Card" parent="." instance=ExtResource("1_m7s34")]
+visible = false
 
 [node name="Mask" parent="." instance=ExtResource("4_qkld8")]
 visible = false

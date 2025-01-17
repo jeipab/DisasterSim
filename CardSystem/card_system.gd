@@ -37,7 +37,7 @@ func _ready() -> void:
 			current_card_id = fsm.start_state
 		else:
 			push_error("[CardSystem] FSM node not found!")
-	
+		
 	# Spawn the first card
 	spawn_first_card()
 
