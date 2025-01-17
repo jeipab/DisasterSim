@@ -12,7 +12,7 @@ const cards: Dictionary = {
 	1: {
 		"phase": "initial",
 		"type": "regular",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/directed_square-05.png",
 		"title": "You are home and you hear the news: a typhoon is approaching your area.",
 		"choices": {
 			"left": {
