@@ -42,7 +42,6 @@ var max_chars_per_line := 20
 # Node references
 @onready var choice_label := $ChoiceLabel
 @onready var shadow_node = get_parent()
-@onready var delay_timer := $DelayTimer
 
 # State tracking
 var cursor_moved := false
