@@ -61,7 +61,7 @@ func get_card_texture(card_id: int) -> Texture:
 	return load(image_path)
 
 # Spawn a new card when the current one falls
-func spawn_new_card(texture: Texture) -> void:
+func spawn_new_card(_texture: Texture) -> void:
 	if not fsm:
 		push_error("[CardSystem] Cannot spawn card - FSM not initialized")
 		return

@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 		if cursor_moved:
 			follow_cursor(delta)
 
-func check_cursor_movement(delta: float) -> void:
+func check_cursor_movement(_delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
 	if global_mouse_pos.distance_to(initial_mouse_pos) > 10:
 		cursor_moved = true

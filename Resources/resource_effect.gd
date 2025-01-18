@@ -14,6 +14,7 @@ var up_animation_speed: float = 8.0
 var current_animation_speed: float = 5.0
 var is_moving: bool = false
 var is_down: bool = false
+var just_reached_top: bool = false
 
 @onready var texture_rect = $CircleTexture
 
@@ -27,19 +28,18 @@ func _ready() -> void:
 func _on_card_tilted_left() -> void:
 	var parent = get_parent()
 	if parent and parent.has_method("get_value") and parent.requires_update and parent.left_change != 0:
-		move_down()
 		scale_effect(abs(parent.left_change))
+		move_down()
 
 func _on_card_tilted_right() -> void:
 	var parent = get_parent()
 	if parent and parent.has_method("get_value") and parent.requires_update and parent.right_change != 0:
-		move_down()
 		scale_effect(abs(parent.right_change))
+		move_down()
 
 func _on_card_untilted() -> void:
 	if is_down:
 		move_up()
-		reset_scale()
 
 func scale_effect(change_magnitude: float) -> void:
 	var new_scale: float
@@ -61,6 +61,7 @@ func move_down() -> void:
 		current_animation_speed = down_animation_speed
 		is_moving = true
 		is_down = true
+		just_reached_top = false
 
 func move_up() -> void:
 	if is_down:
@@ -75,3 +76,8 @@ func _process(delta: float) -> void:
 		if position.distance_to(target_position) < 1.0:
 			position = target_position
 			is_moving = false
+			
+			# If we just finished moving up (reached top position)
+			if !is_down and !just_reached_top:
+				just_reached_top = true  # Mark that we've just reached the top
+				reset_scale()  # Reset scale only after reaching the top
