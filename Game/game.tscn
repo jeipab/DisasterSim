@@ -1,13 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8kyecgu6fbm7"]
+[gd_scene load_steps=8 format=3 uid="uid://c8kyecgu6fbm7"]
 
 [ext_resource type="Script" path="res://Game/game.gd" id="1_pvf02"]
 [ext_resource type="PackedScene" uid="uid://c0xl3d74ji0ge" path="res://CardSystem/scenario_text.tscn" id="2_43ynp"]
+[ext_resource type="PackedScene" uid="uid://ce1hmxdq3cfhs" path="res://Game/background.tscn" id="2_fjdek"]
 [ext_resource type="PackedScene" uid="uid://b852gf4qy1jgd" path="res://CardSystem/card_system.tscn" id="3_m7eef"]
+[ext_resource type="PackedScene" uid="uid://dovdb4nv5hb1" path="res://Game/dock.tscn" id="3_s0qux"]
 [ext_resource type="PackedScene" uid="uid://dvhhue32262p6" path="res://Resources/resource_container.tscn" id="4_resource"]
 [ext_resource type="PackedScene" uid="uid://bl8fve1bsmn8a" path="res://Manager/fsm.tscn" id="5_ykfvr"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_pvf02")
+
+[node name="Background" parent="." instance=ExtResource("2_fjdek")]
+
+[node name="Dock" parent="." instance=ExtResource("3_s0qux")]
 
 [node name="Fsm" parent="." instance=ExtResource("5_ykfvr")]
 

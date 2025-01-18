@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dovdb4nv5hb1"]
+
+[ext_resource type="Texture2D" uid="uid://v3rser1tcdwc" path="res://Art/Background-Dock_Upper Dock.png" id="1_huvrw"]
+
+[node name="Dock" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(960.924, 118.5)
+scale = Vector2(0.240201, 0.240201)
+texture = ExtResource("1_huvrw")
