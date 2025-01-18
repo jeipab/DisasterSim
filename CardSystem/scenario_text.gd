@@ -68,10 +68,10 @@ func set_new_scenario() -> void:
 		push_error("[ScenarioText] Card ID %d not found in FSM" % current_card_id)
 		return
 	
-	print("[ScenarioText] Setting text for card %d: %s" % [current_card_id, card_data["title"]])
+	print("[ScenarioText] Setting text for card %d: %s" % [current_card_id, card_data["text"]])
 	
-	# Set text based on card title
-	var new_text = card_data["title"]
+	# Set text based on card text
+	var new_text = card_data["text"]
 	
 	# Set up typing animation for new text
 	current_text = new_text
