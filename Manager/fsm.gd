@@ -763,7 +763,7 @@ const card_10_variations: Array[Dictionary] = [
 
 
 func randomize_card(card_number: int, card_variations: Array[Dictionary]) -> void:
-	var random_card = card_variations[randi() % card_7_variations.size()]
+	var random_card = card_variations[randi() % card_variations.size()]
 	cards[card_number] = random_card
 
 
