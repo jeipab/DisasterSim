@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0xl3d74ji0ge"]
+[gd_scene load_steps=3 format=3 uid="uid://c0xl3d74ji0ge"]
 
 [ext_resource type="Script" path="res://CardSystem/scenario_text.gd" id="1_script"]
+[ext_resource type="AudioStream" uid="uid://cw3aemvvlix6w" path="res://Sounds/text_speech_1.mp3" id="2_8xo3c"]
 
 [node name="ScenarioText" type="Node2D"]
 script = ExtResource("1_script")
@@ -18,3 +19,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 text_overrun_behavior = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_8xo3c")

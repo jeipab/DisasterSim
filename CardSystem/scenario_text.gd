@@ -14,6 +14,8 @@ var type_timer := 0.0
 var is_typing := false
 
 @onready var text_label := $TextLabel
+@onready var audio_player = $AudioStreamPlayer
+@onready var speech_sfx = preload("res://Sounds/text_speech_2.mp3")
 
 # Initialize with FSM reference
 func initialize(fsm_node) -> void:
@@ -53,8 +55,27 @@ func _process(delta: float) -> void:
 				char_index += 1
 				display_text = target_text.substr(0, char_index)
 				text_label.text = display_text
+				
+				# Play sound for each character
+				play_typing_sound(display_text[char_index - 1])
 			else:
 				is_typing = false
+
+func play_typing_sound(character: String) -> void:
+	# Duplicate audio player and apply sound
+	var new_audio_player = audio_player.duplicate()
+	new_audio_player.stream = speech_sfx
+	new_audio_player.pitch_scale += randf_range(-0.5, 0.5)  # Slight variation in pitch  
+	
+	# Apply extra pitch change if the character is a vowel
+	if character in ["a", "e", "i", "o", "u"]:
+		new_audio_player.pitch_scale += 1.0
+		
+	# Play the sound and clean up after it's done
+	get_tree().root.add_child(new_audio_player)
+	new_audio_player.play()
+	await new_audio_player.finished
+	new_audio_player.queue_free()	
 
 func set_new_scenario() -> void:
 	if not fsm:
