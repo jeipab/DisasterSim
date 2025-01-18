@@ -7,7 +7,7 @@ var states: Array[int]
 var start_state: int = 1
 var final_states: Array[int]
 
-const cards: Dictionary = {
+var cards: Dictionary = {
 	# Initial Phase (Preparation)
 	1: {
 		"phase": "initial",
@@ -499,14 +499,79 @@ const cards: Dictionary = {
 	}
 };
 
+const card_7_variations: Array[Dictionary] = [
+	{
+	"phase": "crisis",
+	"type": "regular",
+		"image": "res://Art/test-squares-03.png",
+		"title": "You stayed at home, but there’s a flood rising... CARD 7A",
+		"choices": {
+			"left": {
+				"text": "Call for help and wait from the higher ground of your house.",
+				"next_card": 8,
+				"resources": {
+					"stamina": -5,
+					"supplies": -10,
+					"morale": 10
+				}
+			},
+			"right": {
+				"text": "Evacuate quickly despite the risks.",
+				"next_card": 8,
+				"resources": {
+					"stamina": -10,
+					"supplies": 5,
+					"property": -5
+				}
+			}
+		}
+	},
+	{
+	"phase": "crisis",
+	"type": "regular",
+		"image": "res://Art/test-squares-03.png",
+		"title": "You stayed at home, but there’s a flood rising... CARD 7B",
+		"choices": {
+			"left": {
+				"text": "Call for help and wait from the higher ground of your house.",
+				"next_card": 8,
+				"resources": {
+					"stamina": -5,
+					"supplies": -10,
+					"morale": 10
+				}
+			},
+			"right": {
+				"text": "Evacuate quickly despite the risks.",
+				"next_card": 8,
+				"resources": {
+					"stamina": -10,
+					"supplies": 5,
+					"property": -5
+				}
+			}
+		}
+	}
+]
+
+func randomize_card(card_number: int, card_variations: Array[Dictionary]) -> void:
+	var random_card = card_variations[randi() % card_7_variations.size()]
+	cards[card_number] = random_card
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	randomize()
+	
+	randomize_card(7, card_7_variations)
+	
 	# Populate the states and the final states
 	for id in cards.keys():
 		var card = cards[id]
+		states.append(card)
 		if card["phase"] == "concluding":
 			final_states.append(id)
+			
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
