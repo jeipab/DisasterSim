@@ -186,15 +186,15 @@ func get_total_resources() -> float:
 	var total = 0.0
 	for resource in resource_container.get_node("Grouped").get_children():
 		total += resource.get_value()
-	return total
+	return total/4
 
 func determine_ending_card() -> int:
 	var total = get_total_resources()
 	
 	# Determine which ending based on total resources
-	if total >= 200:  # High resources (75% of max possible)
+	if total >= 75:  
 		return 21
-	elif total >= 100:  # Medium resources (50% of max possible)
+	elif total >= 50:  
 		return 22
 	else:  # Low resources
 		return 23

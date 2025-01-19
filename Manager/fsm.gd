@@ -525,7 +525,7 @@ var cards: Dictionary = {
 	22:
 	{
 		"id": "22",
-		"image": "res://Art/directed_square-05.png",
+		"image": "res://Art/test-squares-02.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Steady and Resilient",
@@ -540,7 +540,7 @@ var cards: Dictionary = {
 	23:
 	{
 		"id": "23",
-		"image": "res://Art/directed_square-05.png",
+		"image": "res://Art/test-squares-03.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Survived, but Scarred",
@@ -570,7 +570,7 @@ var cards: Dictionary = {
 	25:
 	{
 		"id": "25",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-02.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Despair and Isolation",
@@ -585,7 +585,7 @@ var cards: Dictionary = {
 	26:
 	{
 		"id": "26",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-03.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Property Over People",
@@ -600,7 +600,7 @@ var cards: Dictionary = {
 	27:
 	{
 		"id": "27",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-04.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Starvation and Dehydration",
