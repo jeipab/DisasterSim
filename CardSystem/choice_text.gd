@@ -42,6 +42,7 @@ var max_chars_per_line := 20
 # Node references
 @onready var choice_label := $ChoiceLabel
 @onready var shadow_node = get_parent()
+@onready var sfx_swipe: AudioStreamPlayer = $sfx_swipe
 
 # State tracking
 var cursor_moved := false
@@ -168,12 +169,16 @@ func update_choice_position_and_text(delta: float) -> void:
 		if current_side != "left":
 			current_side = "left"
 			choice_label.position = Vector2(text_base_x - text_margin, choice_label.position.y)
+			sfx_swipe.play()
 		choice_label.text = "[left]" + current_pair.left + "[/left]"
 	else:
 		if current_side != "right":
 			current_side = "right"
 			choice_label.position = Vector2(text_base_x + text_margin, choice_label.position.y)
+			sfx_swipe.play()
 		choice_label.text = "[right]" + current_pair.right + "[/right]"
+		
+	
 
 func counter_rotate() -> void:
 	var mask_node = get_parent().get_parent()
