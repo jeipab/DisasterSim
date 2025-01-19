@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-[gd_scene load_steps=2 format=3 uid="uid://s1lgqnvju1sw"]
-=======
-[gd_scene load_steps=3 format=3 uid="uid://ce1hmxdq3cfhs"]
->>>>>>> 66e49de420bacf66f7b61dde0fd780aa8cdbc886
+[gd_scene load_steps=3 format=3 uid="uid://ryvwjkrn8hjm"]
 
 [ext_resource type="Texture2D" uid="uid://csyudnuyb2gfi" path="res://Art/Background-Dock_Background.png" id="1_nf5ak"]
 [ext_resource type="Script" path="res://Game/background.gd" id="1_y7faj"]
