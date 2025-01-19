@@ -207,9 +207,19 @@ func update_choices() -> void:
 		push_error("[ChoiceText] Card ID %d not found in FSM" % current_card_id)
 		return
 		
-	if card_data["type"] != "regular":
-		print("[ChoiceText] Card %d is not a regular card (type: %s)" % [current_card_id, card_data["type"]])
-		return
+	if card_data["type"] == "win":
+		current_pair = {
+			"left": card_data["choices"]["left"]["text"],
+			"right": card_data["choices"]["right"]["text"]
+		}
+	elif card_data["type"] == "regular":
+		if not card_data["choices"].has("left") or not card_data["choices"].has("right"):
+			push_error("[ChoiceText] Card %d missing left or right choice" % current_card_id)
+			return
+		current_pair = {
+			"left": card_data["choices"]["left"]["text"],
+			"right": card_data["choices"]["right"]["text"]
+		}
 		
 	if not card_data["choices"].has("left") or not card_data["choices"].has("right"):
 		push_error("[ChoiceText] Card %d missing left or right choice" % current_card_id)

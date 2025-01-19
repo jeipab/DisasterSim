@@ -166,6 +166,35 @@ func _on_choice_made(is_right: bool) -> void:
 	if card_data["type"] == "regular":
 		var choice = "right" if is_right else "left"
 		if card_data["choices"].has(choice):
+			var next_card = card_data["choices"][choice]["next_card"]
+			
+			# Check if this is a transition to an ending
+			if next_card == -1:
+				next_card = determine_ending_card()
+			
 			# Update current card before spawning new one
-			current_card_id = card_data["choices"][choice]["next_card"]
+			current_card_id = next_card
 			print("[CardSystem] Moving to card ID:", current_card_id)
+		elif card_data["type"] == "win":
+			print("[CardSystem] Reached win state")
+
+func get_total_resources() -> float:
+	var resource_container = get_tree().get_root().find_child("ResourceContainer", true, false)
+	if not resource_container:
+		return 0.0
+	
+	var total = 0.0
+	for resource in resource_container.get_node("Grouped").get_children():
+		total += resource.get_value()
+	return total
+
+func determine_ending_card() -> int:
+	var total = get_total_resources()
+	
+	# Determine which ending based on total resources
+	if total >= 200:  # High resources (75% of max possible)
+		return 21
+	elif total >= 100:  # Medium resources (50% of max possible)
+		return 22
+	else:  # Low resources
+		return 23

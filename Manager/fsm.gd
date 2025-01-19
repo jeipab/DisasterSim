@@ -510,7 +510,7 @@ var cards: Dictionary = {
 	21:
 	{
 		"id": "21",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/directed_square-05.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Triumph Against All Odds",
@@ -525,7 +525,7 @@ var cards: Dictionary = {
 	22:
 	{
 		"id": "22",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/directed_square-05.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Steady and Resilient",
@@ -540,7 +540,7 @@ var cards: Dictionary = {
 	23:
 	{
 		"id": "23",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/directed_square-05.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Survived, but Scarred",

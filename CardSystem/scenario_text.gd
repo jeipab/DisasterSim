@@ -91,12 +91,9 @@ func set_new_scenario() -> void:
 	
 	print("[ScenarioText] Setting text for card %d: %s" % [current_card_id, card_data["text"]])
 	
-	# Set text based on card text
-	var new_text = card_data["text"]
-	
 	# Set up typing animation for new text
-	current_text = new_text
-	target_text = new_text
+	current_text = card_data["text"]
+	target_text = card_data["text"]
 	display_text = ""
 	char_index = 0
 	is_typing = true
@@ -122,12 +119,18 @@ func _on_card_chosen(is_right: bool) -> void:
 	
 	# Get the next card ID based on choice
 	var choice = "right" if is_right else "left"
-	if card_data["type"] == "regular" and card_data["choices"].has(choice):
-		var next_card = card_data["choices"][choice]["next_card"]
-		print("[ScenarioText] Moving from card %d to card %d" % [current_card_id, next_card])
-		current_card_id = next_card
-	elif card_data["type"] in ["win", "lose"]:
-		print("[ScenarioText] Game Over - ", "Victory!" if card_data["type"] == "win" else "Defeat!")
-		return
+	if card_data["type"] == "regular":
+		if card_data["choices"].has(choice):
+			var next_card = card_data["choices"][choice]["next_card"]
+			if next_card == -1:
+				var card_system = get_tree().get_root().find_child("CardSystem", true, false)
+				if card_system:
+					next_card = card_system.determine_ending_card()
+			print("[ScenarioText] Moving from card %d to card %d" % [current_card_id, next_card])
+			current_card_id = next_card
+			set_new_scenario()
+	elif card_data["type"] == "win":
+		print("[ScenarioText] At win card: ", current_card_id)
+		set_new_scenario()
 	
 	set_new_scenario()
