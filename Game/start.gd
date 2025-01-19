@@ -74,5 +74,5 @@ func _on_start_button_pressed():
 	
 	await tween_final.finished
 	
-	# Change to game scene
-	get_tree().change_scene_to_file("res://Game/game.tscn")
+	# Change to loading scene instead of game scene
+	get_tree().change_scene_to_file("res://Game/loading.tscn")
