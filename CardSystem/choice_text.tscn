@@ -21,4 +21,3 @@ scroll_active = false
 
 [node name="sfx_swipe" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_li0x3")
-volume_db = -10.0

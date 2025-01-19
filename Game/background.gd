@@ -8,8 +8,17 @@ var background_textures = {
 	"concluding": preload("res://Art/BG_Concluding.png")
 }
 
-# Reference to the background sprite
+# Preload BGM tracks
+var bgm_tracks = {
+	"initial": preload("res://Sounds/initial_phase_bgm.mp3"),
+	"crisis": preload("res://Sounds/crisis_phase_bgm.mp3"),
+	"recovery": preload("res://Sounds/recovery_phase_bgm.mp3"),
+	"concluding": preload("res://Sounds/concluding_phase_bgm.mp3"),
+}
+
+# Reference to the background sprite and audio player
 @onready var background_sprite = $Sprite2D
+@onready var phase_bgm: AudioStreamPlayer = $phase_bgm
 
 # Reference to FSM
 var fsm = null
@@ -72,7 +81,23 @@ func update_background(phase: String) -> void:
 
 	print("[Background] Updating background to phase: ", phase)
 	background_sprite.texture = background_textures[phase]
+	
+	update_bgm(phase)
 	current_phase = phase
+
+func update_bgm(phase: String) -> void:
+	if not phase_bgm:
+		push_error("[Background] Audio player not found")
+		return
+
+	if not bgm_tracks.has(phase):
+		push_error("[Background] Invalid BGM phase: ", phase)
+		return
+
+	print("[Background] Updating BGM to phase: ", phase)
+	phase_bgm.stop()
+	phase_bgm.stream = bgm_tracks[phase]
+	phase_bgm.play()
 
 # Add transition effects
 func transition_to_background(phase: String) -> void:
