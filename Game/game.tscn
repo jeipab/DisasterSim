@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c8kyecgu6fbm7"]
+[gd_scene load_steps=9 format=3 uid="uid://c8kyecgu6fbm7"]
 
 [ext_resource type="Script" path="res://Game/game.gd" id="1_pvf02"]
 [ext_resource type="PackedScene" uid="uid://c0xl3d74ji0ge" path="res://CardSystem/scenario_text.tscn" id="2_43ynp"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dovdb4nv5hb1" path="res://Game/dock.tscn" id="3_s0qux"]
 [ext_resource type="PackedScene" uid="uid://dvhhue32262p6" path="res://Resources/resource_container.tscn" id="4_resource"]
 [ext_resource type="PackedScene" uid="uid://bl8fve1bsmn8a" path="res://Manager/fsm.tscn" id="5_ykfvr"]
+[ext_resource type="Script" path="res://Game/game_manager.gd" id="8_manager"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_pvf02")
@@ -25,6 +26,9 @@ position = Vector2(-30, 120)
 
 [node name="CardSystem" parent="." instance=ExtResource("3_m7eef")]
 position = Vector2(11, 120)
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("8_manager")
 
 [node name="Center line" type="ColorRect" parent="."]
 visible = false
