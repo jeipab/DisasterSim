@@ -19,7 +19,6 @@ var fsm = null  # FSM reference
 func initialize(fsm_node) -> void:
 	fsm = fsm_node
 	if fsm:
-		print("[CardSystem] Initialized with FSM")
 		current_card_id = fsm.start_state
 	else:
 		push_error("[CardSystem] Failed to initialize - no FSM provided")
@@ -33,7 +32,6 @@ func _ready() -> void:
 	if not fsm:
 		fsm = get_tree().get_root().find_child("Fsm", true, false)
 		if fsm:
-			print("[CardSystem] Found FSM node")
 			current_card_id = fsm.start_state
 		else:
 			push_error("[CardSystem] FSM node not found!")
@@ -57,7 +55,6 @@ func get_card_texture(card_id: int) -> Texture:
 		return null
 		
 	var image_path = card_data["image"]
-	print("[CardSystem] Loading texture from path:", image_path)
 	return load(image_path)
 
 # Spawn a new card when the current one falls
@@ -71,10 +68,6 @@ func spawn_new_card(_texture: Texture) -> void:
 	if not card_data:
 		push_error("[CardSystem] Card ID %d not found in FSM" % current_card_id)
 		return
-		
-	if card_data["type"] != "regular":
-		print("[CardSystem] Card %d is not a regular card (type: %s)" % 
-			  [current_card_id, card_data["type"]])
 	
 	# Create new card instance
 	var new_card = card_scene.instantiate()
@@ -93,7 +86,7 @@ func spawn_new_card(_texture: Texture) -> void:
 		animated_sprite.sprite_frames = sprite_frames
 		animated_sprite.play("default")
 		animated_sprite.stop()
-		print("[CardSystem] Set card texture for card ID:", current_card_id)
+		
 	else:
 		push_error("[CardSystem] Error: AnimatedSprite2D not found in new card")
 		
@@ -107,7 +100,6 @@ func spawn_new_card(_texture: Texture) -> void:
 func create_mask_with_elements(card) -> void:
 	# Spawn new mask with shadow whenever a new card is spawned
 	mask_count += 1
-	print("[CardSystem] Spawning new mask with card (Count: ", mask_count, ")")
 	
 	var new_mask = mask_scene.instantiate()
 	add_child(new_mask)
@@ -134,8 +126,6 @@ func create_mask_with_elements(card) -> void:
 	choice_text.sync_with_scenario(current_card_id) 
 	choice_text.connect("choice_made", _on_choice_made)
 	
-	print("[CardSystem] Mask and shadow created successfully with card ID:", current_card_id)
-	
 func _on_card_fell_off() -> void:
 	base_node.animate()  # Programmatically trigger the base animation
 	
@@ -156,8 +146,7 @@ func _on_choice_made(is_right: bool) -> void:
 	if not fsm:
 		push_error("[CardSystem] Cannot handle choice - FSM not initialized")
 		return
-		
-	print("[CardSystem] Choice made:", "right" if is_right else "left")
+
 	var card_data = fsm.cards.get(current_card_id)
 	if not card_data:
 		push_error("[CardSystem] Current card ID %d not found in FSM" % current_card_id)
@@ -174,7 +163,6 @@ func _on_choice_made(is_right: bool) -> void:
 			
 			# Update current card before spawning new one
 			current_card_id = next_card
-			print("[CardSystem] Moving to card ID:", current_card_id)
 		elif card_data["type"] == "win":
 			print("[CardSystem] Reached win state")
 

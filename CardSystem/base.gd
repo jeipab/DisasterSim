@@ -49,7 +49,6 @@ func get_next_card_texture() -> Texture:
 		return initial_texture
 		
 	var image_path = card_data["image"]
-	print("[Base] Loading next card texture from path:", image_path)
 	return load(image_path)
 
 # Flip the base and introduce a new card
