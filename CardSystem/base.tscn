@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://nlycbmbobkci"]
+[gd_scene load_steps=5 format=3 uid="uid://nlycbmbobkci"]
 
 [ext_resource type="Script" path="res://CardSystem/base.gd" id="1_7mhas"]
 [ext_resource type="Texture2D" uid="uid://dv8gpfpa7hr2" path="res://Art/Card_Back_Card (Back).png" id="2_jjtb1"]
+[ext_resource type="AudioStream" uid="uid://twaaa1hqp6k7" path="res://Sounds/card_flip.mp3" id="3_brols"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7wxvy"]
 size = Vector2(521, 521)
@@ -19,3 +20,7 @@ texture = ExtResource("2_jjtb1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 0.5)
 shape = SubResource("RectangleShape2D_7wxvy")
+
+[node name="sfx_flip" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_brols")
+volume_db = -20.0

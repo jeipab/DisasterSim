@@ -12,6 +12,7 @@ var fsm = null  # Reference to FSM node
 var card_system = null  # Reference to CardSystem
 
 @onready var card_sprite := $CardSprite # Sprite2D node for the card
+@onready var sfx_flip: AudioStreamPlayer = $sfx_flip
 
 # Called when the node enters the scene tree for the first time
 func _ready() -> void:
@@ -55,6 +56,7 @@ func get_next_card_texture() -> Texture:
 func animate() -> void:
 	# Get next card's texture before starting animation
 	var next_texture = get_next_card_texture()
+	sfx_flip.play()
 	
 	# Grow the card
 	var tween = get_tree().create_tween()
