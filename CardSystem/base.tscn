@@ -23,4 +23,4 @@ shape = SubResource("RectangleShape2D_7wxvy")
 
 [node name="sfx_flip" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_brols")
-volume_db = -20.0
+volume_db = -12.0
