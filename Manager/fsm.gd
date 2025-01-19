@@ -111,7 +111,7 @@ var cards: Dictionary = {
 	5:
 	{
 		"id": "5",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-04.png",
 		"phase": "initial",
 		"type": "regular",
 		"name": "Pack supplies",
@@ -162,7 +162,7 @@ var cards: Dictionary = {
 	7:
 	{
 		"id": "7a",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-02.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Flood rising",
@@ -186,7 +186,7 @@ var cards: Dictionary = {
 	8:
 	{
 		"id": "8a",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-03.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Evacuation center with sufficient supplies",
@@ -211,7 +211,7 @@ var cards: Dictionary = {
 	9:
 	{
 		"id": "9",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-04.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Flood rising and supplies running out",
@@ -260,7 +260,7 @@ var cards: Dictionary = {
 	11:
 	{
 		"id": "11",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-02.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Participate in activities in the evacuation center",
@@ -284,7 +284,7 @@ var cards: Dictionary = {
 	12:
 	{
 		"id": "12",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-03.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Focus on your own needs",
@@ -309,7 +309,7 @@ var cards: Dictionary = {
 	13:
 	{
 		"id": "13",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-04.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "At the evacuation center, the typhoon has passed",
@@ -359,7 +359,7 @@ var cards: Dictionary = {
 	15:
 	{
 		"id": "15",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-02.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Unstable structures in your home",
@@ -384,7 +384,7 @@ var cards: Dictionary = {
 	16:
 	{
 		"id": "16",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-03.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Incoming supplies in the evacuation center",
@@ -410,7 +410,7 @@ var cards: Dictionary = {
 	17:
 	{
 		"id": "17",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-04.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Bacteria exposure",
@@ -460,7 +460,7 @@ var cards: Dictionary = {
 	19:
 	{
 		"id": "19",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-02.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Stabilizing your home",
@@ -484,7 +484,7 @@ var cards: Dictionary = {
 	20:
 	{
 		"id": "20",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-03.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Recovering at the evacuation center",

@@ -144,6 +144,10 @@ func _input(event: InputEvent) -> void:
 			
 # Handle choices and update current card ID
 func _on_choice_made(is_right: bool) -> void:
+	if final_card_spawned:
+		await get_tree().create_timer(1.0).timeout
+		get_tree().change_scene_to_file("res://Game/start.tscn")
+	
 	if not fsm:
 		push_error("[CardSystem] Cannot handle choice - FSM not initialized")
 		return
