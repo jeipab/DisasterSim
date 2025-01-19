@@ -8,10 +8,10 @@ script = ExtResource("1_script")
 
 [node name="TextLabel" type="Label" parent="."]
 custom_minimum_size = Vector2(1000, 0)
-offset_left = 500.0
-offset_top = 75.0
-offset_right = 1500.0
-offset_bottom = 275.0
+offset_left = 270.0
+offset_top = 100.0
+offset_right = 1670.0
+offset_bottom = 300.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
 text = "Display Display"

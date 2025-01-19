@@ -21,10 +21,10 @@ script = ExtResource("1_pvf02")
 position = Vector2(27, 58)
 
 [node name="ScenarioText" parent="." instance=ExtResource("2_43ynp")]
-position = Vector2(-30, 110)
+position = Vector2(-30, 120)
 
 [node name="CardSystem" parent="." instance=ExtResource("3_m7eef")]
-position = Vector2(11, 104)
+position = Vector2(11, 120)
 
 [node name="Center line" type="ColorRect" parent="."]
 visible = false

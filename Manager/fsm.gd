@@ -470,13 +470,13 @@ var cards: Dictionary = {
 			"left":
 			{
 				"text": "Focus on repairing essential areas first.",
-				"next_card": 21,
+				"next_card": -1,
 				"resources": {"stamina": -10, "property": 10}
 			},
 			"right":
 			{
 				"text": "Conserve energy and plan for long-term repairs.",
-				"next_card": 22,
+				"next_card": -1,
 				"resources": {"stamina": 5, "property": 5}
 			}
 		}
@@ -495,13 +495,13 @@ var cards: Dictionary = {
 			"left":
 			{
 				"text": "Volunteer to help organize supplies and assist others.",
-				"next_card": 21,
+				"next_card": -1,
 				"resources": {"stamina": -5, "morale": 10}
 			},
 			"right":
 			{
 				"text": "Focus on regaining your strength and conserving your resources.",
-				"next_card": 22,
+				"next_card": -1,
 				"resources": {"stamina": 10, "morale": -5}
 			}
 		}
