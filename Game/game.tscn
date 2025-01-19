@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://Game/game.gd" id="1_pvf02"]
 [ext_resource type="PackedScene" uid="uid://c0xl3d74ji0ge" path="res://CardSystem/scenario_text.tscn" id="2_43ynp"]
-[ext_resource type="PackedScene" path="res://Game/background.tscn" id="2_fjdek"]
+[ext_resource type="PackedScene" uid="uid://s1lgqnvju1sw" path="res://Game/background.tscn" id="2_fjdek"]
 [ext_resource type="PackedScene" uid="uid://b852gf4qy1jgd" path="res://CardSystem/card_system.tscn" id="3_m7eef"]
-[ext_resource type="PackedScene" path="res://Game/dock.tscn" id="3_s0qux"]
+[ext_resource type="PackedScene" uid="uid://dttsohq4v7oup" path="res://Game/dock.tscn" id="3_s0qux"]
 [ext_resource type="PackedScene" uid="uid://dvhhue32262p6" path="res://Resources/resource_container.tscn" id="4_resource"]
 [ext_resource type="PackedScene" uid="uid://bl8fve1bsmn8a" path="res://Manager/fsm.tscn" id="5_ykfvr"]
 

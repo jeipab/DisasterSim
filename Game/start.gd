@@ -4,6 +4,7 @@ extends Node2D
 @onready var mask = $Mask
 @onready var icon = $Mask/Icon
 @onready var animation_player = $AnimationPlayer
+@onready var start_bgm: AudioStreamPlayer = $start_bgm
 
 # Tilt properties
 var max_tilt_angle: float = 8.0  # Reduced max tilt for subtler effect
@@ -11,6 +12,7 @@ var tilt_sensitivity: float = 0.3  # How responsive the tilt is to mouse movemen
 var center_screen: float
 
 func _ready():
+	start_bgm.play()
 	# Connect button signal
 	start_button.pressed.connect(_on_start_button_pressed)
 	
