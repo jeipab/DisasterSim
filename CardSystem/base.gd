@@ -33,12 +33,6 @@ func _ready() -> void:
 # When the base is clicked, start the animation
 func _on_area2d_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and not animating:
-		# Check if current card is a game over card
-		if card_system and fsm:
-			var card_data = fsm.cards.get(card_system.current_card_id)
-			if card_data and card_data["type"] in ["win", "lose"]:
-				return  # Don't animate for game over cards
-				
 		animating = true
 		animate()
 

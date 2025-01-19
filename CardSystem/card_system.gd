@@ -3,6 +3,7 @@ extends Node
 signal card_spawned(card)  # Add this at the top with other signals
 
 # Reference to the Base, Card, and Mask scenes
+@onready var game_manager = $GameManager
 @onready var base_node = $Base
 @onready var card_scene = preload("res://CardSystem/card.tscn")
 @onready var mask_scene = preload("res://CardSystem/mask.tscn")
@@ -43,11 +44,6 @@ func _ready() -> void:
 
 # This method will be called when the signal is emitted
 func _on_new_card_needed(texture: Texture) -> void:
-	var card_data = fsm.cards.get(current_card_id)
-	if card_data and card_data["type"] in ["win", "lose"]:
-		# Don't spawn new cards for ending cards
-		print("[CardSystem] Not spawning new card for ending state")
-		return
 	spawn_new_card(texture)
 	
 # Get texture from FSM card data
@@ -76,8 +72,6 @@ func spawn_new_card(_texture: Texture) -> void:
 	if not card_data:
 		push_error("[CardSystem] Card ID %d not found in FSM" % current_card_id)
 		return
-		
-	print("[CardSystem] Spawning card ID:", current_card_id, " Type:", card_data["type"])
 	
 	# Create new card instance
 	var new_card = card_scene.instantiate()
@@ -138,17 +132,13 @@ func create_mask_with_elements(card) -> void:
 	choice_text.connect("choice_made", _on_choice_made)
 	
 	print("[CardSystem] Mask and shadow created successfully with card ID:", current_card_id)
-
+	
 func _on_card_fell_off() -> void:
 	var card_data = fsm.cards.get(current_card_id)
 	if card_data and card_data["type"] in ["win", "lose"]:
-		print("[CardSystem] Ending card fell, transitioning to start screen")
-		await get_tree().create_timer(1.0).timeout
-		get_tree().change_scene_to_file("res://Game/start.tscn")
+		# Don't trigger base animation for game over cards
 		return
-	
-	# Only animate base for regular cards
-	base_node.animate()
+	base_node.animate()  # Programmatically trigger the base animation
 	
 # Spawn the first card and connect it to the chain
 func spawn_first_card() -> void:
@@ -174,12 +164,13 @@ func _on_choice_made(is_right: bool) -> void:
 		push_error("[CardSystem] Current card ID %d not found in FSM" % current_card_id)
 		return
 		
-	# Handle choice based on card type
 	if card_data["type"] == "regular":
 		var choice = "right" if is_right else "left"
 		if card_data["choices"].has(choice):
+			# Update current card before spawning new one
 			current_card_id = card_data["choices"][choice]["next_card"]
 			print("[CardSystem] Moving to card ID:", current_card_id)
-	elif card_data["type"] in ["win", "lose"]:
-		print("[CardSystem] Made choice on ending card")
-		# The transition to start screen will happen in _on_card_fell_off
+		elif card_data["type"] in ["win", "lose"]:
+			# For win/lose cards, go back to start screen
+			game_manager.reset_game()
+			return
