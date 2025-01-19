@@ -555,7 +555,7 @@ var cards: Dictionary = {
 	24:
 	{
 		"id": "24",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/test-squares-04.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Exhaustion and Collapse",
@@ -600,7 +600,7 @@ var cards: Dictionary = {
 	27:
 	{
 		"id": "27",
-		"image": "res://Art/test-squares-04.png",
+		"image": "res://Art/test-squares-01.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Starvation and Dehydration",

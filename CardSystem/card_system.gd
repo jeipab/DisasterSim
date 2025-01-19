@@ -16,6 +16,7 @@ var mask_count = 0  # Add counter for debugging
 var current_card_id: int = 1  # Track current card ID
 var fsm = null  # FSM reference
 var final_card_spawned = false
+var resource_tracker: Node
 
 func initialize(fsm_node) -> void:
 	fsm = fsm_node
@@ -36,9 +37,19 @@ func _ready() -> void:
 			current_card_id = fsm.start_state
 		else:
 			push_error("[CardSystem] FSM node not found!")
+			
+	# Initialize resource tracker
+	resource_tracker = Node.new()
+	resource_tracker.set_script(load("res://Manager/resource_tracker.gd"))
+	add_child(resource_tracker)
+	resource_tracker.connect("resource_depleted", _on_resource_depleted)
 		
 	# Spawn the first card
 	spawn_first_card()
+	
+func _on_resource_depleted(loss_card: int) -> void:
+	print("[CardSystem] Resource depleted, transitioning to card: ", loss_card)
+	current_card_id = loss_card
 
 # This method will be called when the signal is emitted
 func _on_new_card_needed(texture: Texture) -> void:
@@ -128,6 +139,10 @@ func create_mask_with_elements(card) -> void:
 	choice_text.connect("choice_made", _on_choice_made)
 	
 func _on_card_fell_off() -> void:
+	# Check for loss conditions first
+	var loss_card = resource_tracker.check_resources()
+	force_background_update()
+	
 	base_node.animate()  # Programmatically trigger the base animation
 	
 # Spawn the first card and connect it to the chain
@@ -144,9 +159,10 @@ func _input(event: InputEvent) -> void:
 			
 # Handle choices and update current card ID
 func _on_choice_made(is_right: bool) -> void:
-	if final_card_spawned:
+	if final_card_spawned or (current_card_id >= 24 and current_card_id <= 27):
 		await get_tree().create_timer(1.0).timeout
 		get_tree().change_scene_to_file("res://Game/start.tscn")
+		return
 	
 	if not fsm:
 		push_error("[CardSystem] Cannot handle choice - FSM not initialized")
@@ -160,16 +176,29 @@ func _on_choice_made(is_right: bool) -> void:
 	if card_data["type"] == "regular":
 		var choice = "right" if is_right else "left"
 		if card_data["choices"].has(choice):
-			var next_card = card_data["choices"][choice]["next_card"]
+			# Update resources in tracker
+			var resources = card_data["choices"][choice].get("resources", {})
+			for resource_type in resources:
+				resource_tracker.modify_resource(resource_type, resources[resource_type])
 			
-			# Check if this is a transition to an ending
-			if next_card == -1:
-				next_card = determine_ending_card()
-				print("[Card System] Final card spawned")
-				final_card_spawned = true
-			
-			# Update current card before spawning new one
-			current_card_id = next_card
+			# Check for loss conditions after resource update
+			var loss_check = resource_tracker.check_resources()
+			if loss_check != -1:
+				current_card_id = loss_check
+				print("[CardSystem] Loss condition detected, transitioning to card: ", loss_check)
+				# Force background update to concluding phase
+				force_background_update()
+			else:
+				var next_card = card_data["choices"][choice]["next_card"]
+				# Check if this is a transition to an ending
+				if next_card == -1:
+					next_card = determine_ending_card()
+					print("[Card System] Final card spawned")
+					final_card_spawned = true
+				
+				# Update current card before spawning new one
+				current_card_id = next_card
+				
 		elif card_data["type"] == "win":
 			print("[CardSystem] Reached win state")
 
@@ -193,3 +222,11 @@ func determine_ending_card() -> int:
 		return 22
 	else:  # Low resources
 		return 23
+		
+func force_background_update() -> void:
+	var background = get_tree().get_root().find_child("Background", true, false)
+	if background:
+		var card_data = fsm.cards.get(current_card_id)
+		if card_data:
+			background.transition_to_background(card_data["phase"])
+			print("[CardSystem] Forcing background update to phase: ", card_data["phase"])

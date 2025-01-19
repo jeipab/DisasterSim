@@ -53,6 +53,7 @@ func _on_card_chosen(_is_right: bool) -> void:
 		push_error("[Background] CardSystem not found")
 		return
 		
+	# Get the latest card ID after potential loss check
 	var card_data = fsm.cards.get(card_system.current_card_id)
 	if not card_data:
 		push_error("[Background] Current card not found in FSM")
@@ -62,6 +63,7 @@ func _on_card_chosen(_is_right: bool) -> void:
 	var new_phase = card_data.get("phase", "initial")
 	if new_phase != current_phase:
 		update_background(new_phase)
+		print("[Background] Updating to phase: ", new_phase)
 
 func update_background(phase: String) -> void:
 	if not background_sprite:
@@ -91,11 +93,4 @@ func update_bgm(phase: String) -> void:
 
 # Add transition effects
 func transition_to_background(phase: String) -> void:
-	var tween = create_tween()
-	tween.tween_property(background_sprite, "modulate:a", 0.0, 0.3)
-	await tween.finished
-	
 	update_background(phase)
-	
-	tween = create_tween()
-	tween.tween_property(background_sprite, "modulate:a", 1.0, 0.3)

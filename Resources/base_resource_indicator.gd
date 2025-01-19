@@ -121,6 +121,9 @@ func initialize(value: float) -> void:
 	update_visualization()
 
 func modify_value(amount: float) -> void:
+	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
+	if card_system and card_system.resource_tracker:
+		card_system.resource_tracker.modify_resource(resource_type, amount)
 	set_value(target_value + amount)
 
 func set_value(new_value: float) -> void:

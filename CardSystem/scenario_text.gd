@@ -106,18 +106,18 @@ func _on_card_chosen(is_right: bool) -> void:
 		push_error("[ScenarioText] Current card ID %d not found in FSM" % current_card_id)
 		return
 	
-	# Get the next card ID based on choice
-	var choice = "right" if is_right else "left"
-	if card_data["type"] == "regular":
+	# Get the latest card ID from card system
+	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
+	if card_system:
+		current_card_id = card_system.current_card_id  # This will now include any loss card override
+		set_new_scenario()
+	elif card_data["type"] == "regular":
+		var choice = "right" if is_right else "left"
 		if card_data["choices"].has(choice):
 			var next_card = card_data["choices"][choice]["next_card"]
 			if next_card == -1:
-				var card_system = get_tree().get_root().find_child("CardSystem", true, false)
+				card_system = get_tree().get_root().find_child("CardSystem", true, false)
 				if card_system:
 					next_card = card_system.determine_ending_card()
 			current_card_id = next_card
 			set_new_scenario()
-	elif card_data["type"] == "win":
-		set_new_scenario()
-	
-	set_new_scenario()
