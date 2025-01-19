@@ -15,6 +15,7 @@ var animated_sprite = null
 var mask_count = 0  # Add counter for debugging
 var current_card_id: int = 1  # Track current card ID
 var fsm = null  # FSM reference
+var final_card_spawned = false
 
 func initialize(fsm_node) -> void:
 	fsm = fsm_node
@@ -160,6 +161,8 @@ func _on_choice_made(is_right: bool) -> void:
 			# Check if this is a transition to an ending
 			if next_card == -1:
 				next_card = determine_ending_card()
+				print("[Card System] Final card spawned")
+				final_card_spawned = true
 			
 			# Update current card before spawning new one
 			current_card_id = next_card
