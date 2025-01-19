@@ -3,7 +3,6 @@ extends Node
 signal card_spawned(card)  # Add this at the top with other signals
 
 # Reference to the Base, Card, and Mask scenes
-@onready var game_manager = $GameManager
 @onready var base_node = $Base
 @onready var card_scene = preload("res://CardSystem/card.tscn")
 @onready var mask_scene = preload("res://CardSystem/mask.tscn")
@@ -72,6 +71,10 @@ func spawn_new_card(_texture: Texture) -> void:
 	if not card_data:
 		push_error("[CardSystem] Card ID %d not found in FSM" % current_card_id)
 		return
+		
+	if card_data["type"] != "regular":
+		print("[CardSystem] Card %d is not a regular card (type: %s)" % 
+			  [current_card_id, card_data["type"]])
 	
 	# Create new card instance
 	var new_card = card_scene.instantiate()
@@ -134,10 +137,6 @@ func create_mask_with_elements(card) -> void:
 	print("[CardSystem] Mask and shadow created successfully with card ID:", current_card_id)
 	
 func _on_card_fell_off() -> void:
-	var card_data = fsm.cards.get(current_card_id)
-	if card_data and card_data["type"] in ["win", "lose"]:
-		# Don't trigger base animation for game over cards
-		return
 	base_node.animate()  # Programmatically trigger the base animation
 	
 # Spawn the first card and connect it to the chain
@@ -170,7 +169,3 @@ func _on_choice_made(is_right: bool) -> void:
 			# Update current card before spawning new one
 			current_card_id = card_data["choices"][choice]["next_card"]
 			print("[CardSystem] Moving to card ID:", current_card_id)
-		elif card_data["type"] in ["win", "lose"]:
-			# For win/lose cards, go back to start screen
-			game_manager.reset_game()
-			return

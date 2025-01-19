@@ -4,7 +4,7 @@ extends Node2D
 @onready var card_system = $CardSystem
 @onready var scenario_text = $ScenarioText
 @onready var resource_container = $ResourceContainer
-@onready var game_manager = $GameManager
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -19,13 +19,6 @@ func _ready() -> void:
 	# Initialize other game systems
 	card_system.initialize(fsm)
 	scenario_text.initialize(fsm)
-	
-	# Initialize game manager last since it depends on other systems
-	if game_manager:
-		# Game manager will find its own references
-		pass
-	else:
-		push_error("GameManager node not found!")
 	
 	print("[Game] All systems initialized")
 
