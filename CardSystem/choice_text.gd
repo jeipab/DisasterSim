@@ -52,7 +52,6 @@ var current_side := "center"
 func initialize(fsm_node) -> void:
 	fsm = fsm_node
 	if fsm:
-		print("[ChoiceText] Initialized with FSM")
 		update_choices()  # Set initial choices
 	else:
 		push_error("[ChoiceText] Failed to initialize - no FSM provided")
@@ -78,7 +77,6 @@ func get_adjusted_max_y_offset(text: String) -> float:
 	return base_max_y_offset + ((lines - 1) * additional_line_offset)
 
 func sync_with_scenario(card_id: int) -> void:
-	print("[ChoiceText] Syncing with scenario, card ID:", card_id)
 	current_card_id = card_id
 	update_choices()
 
@@ -87,7 +85,6 @@ func _ready() -> void:
 	if not fsm:
 		fsm = get_tree().get_root().find_child("Fsm", true, false)
 		if fsm:
-			print("[ChoiceText] Found FSM node")
 			update_choices()
 		else:
 			push_error("[ChoiceText] FSM node not found!")
@@ -104,7 +101,6 @@ func _ready() -> void:
 	var mask_node = shadow_node.get_parent()
 	if mask_node:
 		mask_node.connect("mask_disappeared", Callable(self, "_on_mask_disappeared"))
-		print("[ChoiceText] Connected to mask signals")
 	
 	last_mouse_pos = get_viewport().get_mouse_position()
 
@@ -201,7 +197,6 @@ func update_choices() -> void:
 		push_error("[ChoiceText] FSM not found when updating choices")
 		return
 		
-	print("[ChoiceText] Updating choices for card ID:", current_card_id)
 	var card_data = fsm.cards.get(current_card_id)
 	if not card_data:
 		push_error("[ChoiceText] Card ID %d not found in FSM" % current_card_id)
@@ -230,7 +225,6 @@ func update_choices() -> void:
 		"left": card_data["choices"]["left"]["text"],
 		"right": card_data["choices"]["right"]["text"]
 	}
-	print("[ChoiceText] Updated choices - Left: %s, Right: %s" % [current_pair.left, current_pair.right])
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
@@ -245,7 +239,6 @@ func _input(event: InputEvent) -> void:
 			start_rise_animation()
 
 func _on_mask_disappeared() -> void:
-	print("[ChoiceText] Mask disappeared, moving to next card")
 	if fsm:
 		var card_data = fsm.cards.get(current_card_id)
 		if card_data and card_data["type"] == "regular":
@@ -253,7 +246,6 @@ func _on_mask_disappeared() -> void:
 			var choice = "right" if current_side == "right" else "left"
 			if card_data["choices"].has(choice):
 				current_card_id = card_data["choices"][choice]["next_card"]
-				print("[ChoiceText] Moving to card:", current_card_id)
 				update_choices()
 	
 	is_animating = false

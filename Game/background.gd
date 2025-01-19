@@ -27,17 +27,11 @@ var current_phase: String = "initial"
 func _ready() -> void:
 	# Find FSM node
 	fsm = get_tree().get_root().find_child("Fsm", true, false)
-	if fsm:
-		print("[Background] Found FSM node")
-	else:
-		push_error("[Background] Failed to find FSM node")
-		return
 
 	# Find CardSystem to connect to card spawned signal
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 	if card_system:
 		card_system.connect("card_spawned", _on_card_spawned)
-		print("[Background] Connected to CardSystem")
 	else:
 		push_error("[Background] Failed to find CardSystem")
 
@@ -48,7 +42,6 @@ func _on_card_spawned(card) -> void:
 	# Connect to card's signals
 	if !card.is_connected("card_chosen", _on_card_chosen):
 		card.connect("card_chosen", _on_card_chosen)
-		print("[Background] Connected to card signals")
 
 func _on_card_chosen(_is_right: bool) -> void:
 	if not fsm:
@@ -78,8 +71,6 @@ func update_background(phase: String) -> void:
 	if not background_textures.has(phase):
 		push_error("[Background] Invalid phase: ", phase)
 		return
-
-	print("[Background] Updating background to phase: ", phase)
 	background_sprite.texture = background_textures[phase]
 	
 	update_bgm(phase)
@@ -94,7 +85,6 @@ func update_bgm(phase: String) -> void:
 		push_error("[Background] Invalid BGM phase: ", phase)
 		return
 
-	print("[Background] Updating BGM to phase: ", phase)
 	phase_bgm.stop()
 	phase_bgm.stream = bgm_tracks[phase]
 	phase_bgm.play()

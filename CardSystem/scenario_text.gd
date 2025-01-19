@@ -21,8 +21,6 @@ var is_typing := false
 func initialize(fsm_node) -> void:
 	fsm = fsm_node
 	if fsm:
-		print("[ScenarioText] Initialized with FSM")
-		print("[ScenarioText] Available cards: ", fsm.cards.keys())
 		set_new_scenario()  # Set initial text
 	else:
 		push_error("[ScenarioText] Failed to initialize - no FSM provided")
@@ -32,7 +30,6 @@ func _ready() -> void:
 	if not fsm:
 		fsm = get_tree().get_root().find_child("Fsm", true, false)
 		if fsm:
-			print("[ScenarioText] Found FSM node")
 			set_new_scenario()
 		else:
 			push_error("[ScenarioText] FSM node not found!")
@@ -42,7 +39,6 @@ func _ready() -> void:
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 	if card_system:
 		card_system.connect("card_spawned", _on_card_spawned)
-		print("[ScenarioText] Connected to CardSystem")
 	else:
 		push_error("[ScenarioText] Failed to find CardSystem")
 
@@ -83,13 +79,10 @@ func set_new_scenario() -> void:
 		return
 	
 	# Get current card data
-	print("[ScenarioText] Attempting to get card data for ID:", current_card_id)
 	var card_data = fsm.cards.get(current_card_id)
 	if not card_data:
 		push_error("[ScenarioText] Card ID %d not found in FSM" % current_card_id)
 		return
-	
-	print("[ScenarioText] Setting text for card %d: %s" % [current_card_id, card_data["text"]])
 	
 	# Set up typing animation for new text
 	current_text = card_data["text"]
@@ -100,14 +93,10 @@ func set_new_scenario() -> void:
 	type_timer = 0.0
 
 func _on_card_spawned(card) -> void:
-	print("[ScenarioText] New card spawned, connecting signals")
 	if !card.is_connected("card_chosen", _on_card_chosen):
 		card.connect("card_chosen", _on_card_chosen)
-		print("[ScenarioText] Connected to new card's chosen signal")
 
 func _on_card_chosen(is_right: bool) -> void:
-	print("[ScenarioText] Card choice made:", "right" if is_right else "left")
-	
 	if not fsm:
 		push_error("[ScenarioText] FSM not found when handling choice")
 		return
@@ -126,11 +115,9 @@ func _on_card_chosen(is_right: bool) -> void:
 				var card_system = get_tree().get_root().find_child("CardSystem", true, false)
 				if card_system:
 					next_card = card_system.determine_ending_card()
-			print("[ScenarioText] Moving from card %d to card %d" % [current_card_id, next_card])
 			current_card_id = next_card
 			set_new_scenario()
 	elif card_data["type"] == "win":
-		print("[ScenarioText] At win card: ", current_card_id)
 		set_new_scenario()
 	
 	set_new_scenario()
