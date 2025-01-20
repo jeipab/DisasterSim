@@ -5,6 +5,7 @@ extends Node2D
 @onready var icon = $Mask/Icon
 @onready var animation_player = $AnimationPlayer
 @onready var start_bgm: AudioStreamPlayer = $start_bgm
+@onready var start_click_sfx: AudioStreamPlayer = $start_click_sfx
 
 # Tilt properties
 var max_tilt_angle: float = 8.0  # Reduced max tilt for subtler effect
@@ -40,6 +41,9 @@ func update_tilt(mouse_pos: Vector2) -> void:
 	mask.rotation_degrees = clamp(tilt, -max_tilt_angle, max_tilt_angle)
 
 func _on_start_button_pressed():
+	# Play click sound
+	start_click_sfx.play()
+	
 	# Stop the floating animation
 	animation_player.stop()
 	

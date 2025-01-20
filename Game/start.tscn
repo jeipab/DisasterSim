@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ig4tsg37y5v3"]
+[gd_scene load_steps=9 format=3 uid="uid://ig4tsg37y5v3"]
 
 [ext_resource type="Script" path="res://Game/start.gd" id="1_28fhy"]
 [ext_resource type="Texture2D" uid="uid://bcsw3wkcvvbec" path="res://Icons/test-resource-effect-01.svg" id="1_t4q2q"]
 [ext_resource type="Texture2D" uid="uid://cbo2evwosdaay" path="res://Art/Resources-Icons_Application Icon.png" id="2_x6oka"]
 [ext_resource type="AudioStream" uid="uid://cftllnb52c88v" path="res://Sounds/start_bgm.mp3" id="4_v805s"]
+[ext_resource type="AudioStream" uid="uid://bpncc7ayaros0" path="res://Sounds/button_click_sfx.wav" id="5_86w3g"]
 
 [sub_resource type="Animation" id="Animation_idle"]
 resource_name = "idle_float"
@@ -84,3 +85,6 @@ flat = true
 stream = ExtResource("4_v805s")
 pitch_scale = 0.9
 max_polyphony = 9
+
+[node name="start_click_sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_86w3g")

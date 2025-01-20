@@ -3,6 +3,7 @@ extends Node2D
 @onready var progress_bar = $CanvasLayer/ProgressBar
 @onready var loading_text = $CanvasLayer/LoadingText
 @onready var animation_player = $AnimationPlayer
+@onready var loading_bgm: AudioStreamPlayer = $loading_bgm
 
 var scenes_to_load = {
 	"game": "res://Game/game.tscn",
@@ -38,6 +39,8 @@ func _ready():
 	
 	# Initialize loading
 	load_start_time = Time.get_unix_time_from_system()
+	
+	loading_bgm.play()
 	
 	# Initialize loading for each scene
 	for key in scenes_to_load:

@@ -43,6 +43,7 @@ var max_chars_per_line := 20
 @onready var choice_label := $ChoiceLabel
 @onready var shadow_node = get_parent()
 @onready var sfx_swipe: AudioStreamPlayer = $sfx_swipe
+@onready var sfx_swipe_up: AudioStreamPlayer = $sfx_swipe_up
 
 # State tracking
 var cursor_moved := false
@@ -157,10 +158,14 @@ func update_choice_position_and_text(delta: float) -> void:
 	choice_label.position.y = base_y_position + current_vertical_offset
 	choice_label.position.x = lerp(choice_label.position.x, target_x, delta * horizontal_smooth_speed)
 	
+	var previous_side = current_side
+	
 	# Update text visibility and content
 	if is_near_center:
 		choice_label.text = ""
 		current_side = "center"
+		if not sfx_swipe_up.is_playing() and previous_side != "center":
+			sfx_swipe_up.play()
 	elif mouse_pos.x < screen_center:
 		if current_side != "left":
 			current_side = "left"
