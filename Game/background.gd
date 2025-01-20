@@ -28,6 +28,7 @@ func _ready() -> void:
 	# Find FSM node
 	fsm = get_tree().get_root().find_child("Fsm", true, false)
 	
+	# Play initial background music
 	phase_bgm.stream = bgm_tracks["initial"]
 	phase_bgm.play()
 
