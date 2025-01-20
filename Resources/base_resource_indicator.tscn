@@ -30,7 +30,7 @@ stretch_mode = 5
 layout_mode = 0
 offset_left = 64.0
 offset_right = 334.0
-offset_bottom = 401.0
+offset_bottom = 402.0
 
 [node name="Frame" type="TextureRect" parent="FillMask"]
 clip_children = 1

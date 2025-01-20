@@ -135,7 +135,7 @@ func get_value() -> float:
 func update_visualization() -> void:
 	if color_fill:
 		var value_ratio = current_value / max_value
-		var max_height = 401.0
+		var max_height = 460.0
 		var new_height = max_height * value_ratio
 		
 		color_fill.size.y = new_height

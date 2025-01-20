@@ -1,9 +1,10 @@
 extends Node2D
 
 # Scale settings for different effect sizes
-@export var small_effect_scale: float = 0.15  # <= 5
-@export var medium_effect_scale: float = 0.30  # <= 10
-@export var large_effect_scale: float = 0.60   # > 10
+@export var small_effect_scale: float = 0.10  # <= 5
+@export var medium_effect_scale: float = 0.25  # <= 10
+@export var large_effect_scale: float = 0.50   # > 10
+@export var default_scale: float = 0.5        # Default scale when not showing effect
 
 # Movement properties
 var initial_position: Vector2
@@ -14,7 +15,7 @@ var up_animation_speed: float = 5.0
 var current_animation_speed: float = 5.0
 var is_moving: bool = false
 var is_down: bool = false
-var just_reached_top: bool = false
+var should_reset_scale: bool = false
 
 @onready var texture_rect = $CircleTexture
 
@@ -24,6 +25,7 @@ func _ready() -> void:
 	
 	texture_rect.pivot_offset = texture_rect.size / 2
 	texture_rect.set_anchors_preset(Control.PRESET_CENTER)
+	scale = Vector2(default_scale, default_scale)  # Set initial scale
 
 func _on_card_tilted_left() -> void:
 	var parent = get_parent()
@@ -40,6 +42,7 @@ func _on_card_tilted_right() -> void:
 func _on_card_untilted() -> void:
 	if is_down:
 		move_up()
+		should_reset_scale = true  # Mark that we should reset scale when reaching top
 
 func scale_effect(change_magnitude: float) -> void:
 	var new_scale: float
@@ -50,11 +53,9 @@ func scale_effect(change_magnitude: float) -> void:
 	else:
 		new_scale = large_effect_scale
 	
+	# Apply scale immediately when effect starts
 	scale = Vector2(new_scale, new_scale)
-
-func reset_scale() -> void:
-	await get_tree().create_timer(1.0).timeout
-	scale = Vector2(0.5, 0.5)  # Default scale
+	should_reset_scale = false  # Reset the flag when applying new scale
 
 func move_down() -> void:
 	if !is_down:
@@ -62,7 +63,6 @@ func move_down() -> void:
 		current_animation_speed = down_animation_speed
 		is_moving = true
 		is_down = true
-		just_reached_top = false
 
 func move_up() -> void:
 	if is_down:
@@ -78,7 +78,7 @@ func _process(delta: float) -> void:
 			position = target_position
 			is_moving = false
 			
-			# If we just finished moving up (reached top position)
-			if !is_down and !just_reached_top:
-				just_reached_top = true  # Mark that we've just reached the top
-				reset_scale()  # Reset scale only after reaching the top
+			# Only reset scale if we've reached the top position after moving up
+			if !is_down and should_reset_scale:
+				scale = Vector2(default_scale, default_scale)
+				should_reset_scale = false  # Reset the flag
