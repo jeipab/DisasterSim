@@ -23,6 +23,15 @@ const SMOOTHING_SPEED = 2.0
 const MIN_LOAD_TIME = 1.0  # Minimum loading time in seconds
 var load_start_time: float = 0.0
 
+# BGM control variables
+const BGM_START_THRESHOLD = 5.0  # Start BGM when progress reaches 5%
+const PROGRESS_STALL_THRESHOLD = 0.1  # How much progress needs to change to be considered "moving"
+var bgm_started = false
+var last_progress = 0.0
+var stall_timer = 0.0
+const STALL_CHECK_TIME = 0.5  # How long to wait before considering progress stalled
+
+
 func _ready():
 	# Verify all required nodes are present
 	if not progress_bar or not loading_text:
@@ -39,8 +48,6 @@ func _ready():
 	
 	# Initialize loading
 	load_start_time = Time.get_unix_time_from_system()
-	
-	loading_bgm.play()
 	
 	# Initialize loading for each scene
 	for key in scenes_to_load:
@@ -103,6 +110,21 @@ func _process(delta):
 			delta * SMOOTHING_SPEED
 		)
 		
+		var progress_delta = abs(current_display_progress - last_progress)
+		
+		if progress_delta > PROGRESS_STALL_THRESHOLD:
+			# Progress is moving
+			stall_timer = 0.0
+			if not loading_bgm.playing and current_display_progress >= BGM_START_THRESHOLD:
+				loading_bgm.play()
+		else:
+			# Progress might be stalled
+			stall_timer += delta
+			if stall_timer >= STALL_CHECK_TIME and loading_bgm.playing:
+				loading_bgm.stop()
+		
+		last_progress = current_display_progress		
+		
 		# Update UI with smoothed progress
 		if progress_bar and loading_text:
 			progress_bar.value = current_display_progress
@@ -124,6 +146,13 @@ func transition_to_game():
 		
 	is_transitioning = true
 	print("[Loading] All resources loaded, preparing transition...")
+	
+	# Fade out BGM if it's playing
+	if loading_bgm.playing:
+		var tween = create_tween()
+		tween.tween_property(loading_bgm, "volume_db", -80.0, 0.5)
+		await tween.finished
+		loading_bgm.stop()	
 	
 	# Ensure progress bar shows 100%
 	if progress_bar:
