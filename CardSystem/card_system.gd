@@ -142,7 +142,7 @@ func _on_card_fell_off() -> void:
 	# Check for loss conditions first
 	var loss_card = resource_tracker.check_resources()
 	force_background_update()
-	
+
 	base_node.animate()  # Programmatically trigger the base animation
 	
 # Spawn the first card and connect it to the chain

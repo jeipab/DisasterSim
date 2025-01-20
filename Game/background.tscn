@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ryvwjkrn8hjm"]
 
-[ext_resource type="Texture2D" uid="uid://csyudnuyb2gfi" path="res://Art/Background-Dock_Background.png" id="1_nf5ak"]
 [ext_resource type="Script" path="res://Game/background.gd" id="1_y7faj"]
+[ext_resource type="Texture2D" uid="uid://b3igrlxyybrmh" path="res://Art/BG_Initial.png" id="2_xi66w"]
 
 [node name="Background" type="Node2D"]
 script = ExtResource("1_y7faj")
@@ -9,6 +9,6 @@ script = ExtResource("1_y7faj")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
 scale = Vector2(0.239444, 0.239444)
-texture = ExtResource("1_nf5ak")
+texture = ExtResource("2_xi66w")
 
 [node name="phase_bgm" type="AudioStreamPlayer" parent="."]

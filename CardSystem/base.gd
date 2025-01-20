@@ -62,9 +62,6 @@ func animate() -> void:
 	tween.tween_property(self, "scale", grow_scale, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	await tween.finished
 	
-	# Pause after grow animation
-	await get_tree().create_timer(0.1).timeout
-	
 	# Shrink the card's X-axis to create a flip effect
 	tween = get_tree().create_tween()
 	tween.tween_property(self, "scale", Vector2(0, original_scale.y), 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

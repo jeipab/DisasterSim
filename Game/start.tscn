@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Game/start.gd" id="1_28fhy"]
 [ext_resource type="Texture2D" uid="uid://bcsw3wkcvvbec" path="res://Icons/test-resource-effect-01.svg" id="1_t4q2q"]
-[ext_resource type="Texture2D" uid="uid://s6okrlbkfil5" path="res://Art/Resources-Icons_Application Icon.png" id="2_x6oka"]
+[ext_resource type="Texture2D" uid="uid://cbo2evwosdaay" path="res://Art/Resources-Icons_Application Icon.png" id="2_x6oka"]
 [ext_resource type="AudioStream" uid="uid://cftllnb52c88v" path="res://Sounds/start_bgm.mp3" id="4_v805s"]
 
 [sub_resource type="Animation" id="Animation_idle"]
