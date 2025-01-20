@@ -27,6 +27,9 @@ var current_phase: String = "initial"
 func _ready() -> void:
 	# Find FSM node
 	fsm = get_tree().get_root().find_child("Fsm", true, false)
+	
+	phase_bgm.stream = bgm_tracks["initial"]
+	phase_bgm.play()
 
 	# Find CardSystem to connect to card spawned signal
 	var card_system = get_tree().get_root().find_child("CardSystem", true, false)
@@ -63,6 +66,7 @@ func _on_card_chosen(_is_right: bool) -> void:
 	var new_phase = card_data.get("phase", "initial")
 	if new_phase != current_phase:
 		update_background(new_phase)
+		update_bgm(new_phase)
 		print("[Background] Updating to phase: ", new_phase)
 
 func update_background(phase: String) -> void:
@@ -75,7 +79,6 @@ func update_background(phase: String) -> void:
 		return
 	background_sprite.texture = background_textures[phase]
 	
-	update_bgm(phase)
 	current_phase = phase
 
 func update_bgm(phase: String) -> void:
