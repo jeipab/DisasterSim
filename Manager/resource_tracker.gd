@@ -2,6 +2,8 @@ extends Node
 
 signal resource_depleted(loss_card: int)
 
+var debug = false
+
 var resource_values = {
 	"stamina": 50.0,
 	"morale": 50.0,
@@ -24,13 +26,15 @@ func modify_resource(resource_type: String, amount: float) -> void:
 		var resource = resource_type.to_lower()
 		var old_value = resource_values[resource]
 		resource_values[resource] = maxf(0.0, resource_values[resource] + amount)
-		print("%s: %0.1f -> %0.1f (Δ%0.1f)" % [resource, old_value, resource_values[resource], amount])
+		if debug:
+			print("%s: %0.1f -> %0.1f (Δ%0.1f)" % [resource, old_value, resource_values[resource], amount])
 		check_resources()
 
 func check_resources() -> int:
 	for resource in priority_order:
 		if resource_values[resource] <= 0:
-			print("Resource depleted: %s" % resource)
+			if debug:
+				print("Resource depleted: %s" % resource)
 			emit_signal("resource_depleted", loss_cards[resource])
 			break
 	return -1

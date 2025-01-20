@@ -144,7 +144,6 @@ func handle_fall_animation(delta: float) -> void:
 
 	var viewport_height = get_viewport_rect().size.y
 	if position.y > viewport_height + 500:
-		print("[Card] Card fell off, emitting signal")
 		emit_signal("card_fell_off")
 		queue_free()
 
