@@ -28,8 +28,8 @@ stretch_mode = 5
 
 [node name="ColorFill" type="ColorRect" parent="FillMask"]
 layout_mode = 0
-offset_left = 21.0
-offset_right = 379.0
+offset_left = 64.0
+offset_right = 334.0
 offset_bottom = 401.0
 
 [node name="Frame" type="TextureRect" parent="FillMask"]

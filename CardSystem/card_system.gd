@@ -162,7 +162,6 @@ func _on_choice_made(is_right: bool) -> void:
 	if final_card_spawned or (current_card_id >= 24 and current_card_id <= 27):
 		await get_tree().create_timer(1.0).timeout
 		get_tree().change_scene_to_file("res://Game/start.tscn")
-		return
 	
 	if not fsm:
 		push_error("[CardSystem] Cannot handle choice - FSM not initialized")
@@ -198,9 +197,6 @@ func _on_choice_made(is_right: bool) -> void:
 				
 				# Update current card before spawning new one
 				current_card_id = next_card
-				
-		elif card_data["type"] == "win":
-			print("[CardSystem] Reached win state")
 
 func get_total_resources() -> float:
 	var resource_container = get_tree().get_root().find_child("ResourceContainer", true, false)
@@ -229,4 +225,3 @@ func force_background_update() -> void:
 		var card_data = fsm.cards.get(current_card_id)
 		if card_data:
 			background.transition_to_background(card_data["phase"])
-			print("[CardSystem] Forcing background update to phase: ", card_data["phase"])

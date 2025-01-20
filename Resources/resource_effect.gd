@@ -2,15 +2,15 @@ extends Node2D
 
 # Scale settings for different effect sizes
 @export var small_effect_scale: float = 0.15  # <= 5
-@export var medium_effect_scale: float = 0.45  # <= 10
-@export var large_effect_scale: float = 0.75   # > 10
+@export var medium_effect_scale: float = 0.30  # <= 10
+@export var large_effect_scale: float = 0.60   # > 10
 
 # Movement properties
 var initial_position: Vector2
 var target_position: Vector2
-var move_amount: float = 650.0
+var move_amount: float = 625.0
 var down_animation_speed: float = 5.0
-var up_animation_speed: float = 8.0
+var up_animation_speed: float = 5.0
 var current_animation_speed: float = 5.0
 var is_moving: bool = false
 var is_down: bool = false
@@ -53,6 +53,7 @@ func scale_effect(change_magnitude: float) -> void:
 	scale = Vector2(new_scale, new_scale)
 
 func reset_scale() -> void:
+	await get_tree().create_timer(1.0).timeout
 	scale = Vector2(0.5, 0.5)  # Default scale
 
 func move_down() -> void:

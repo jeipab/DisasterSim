@@ -48,3 +48,15 @@ stretch_mode = 5
 [node name="ResourceEffect" parent="." instance=ExtResource("4_fwjfu")]
 position = Vector2(200, -752)
 scale = Vector2(0.5, 0.5)
+
+[node name="Frame" type="TextureRect" parent="."]
+clip_children = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_rqbhw")
+expand_mode = 1
+stretch_mode = 5
