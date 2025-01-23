@@ -87,9 +87,9 @@ func update_background(phase: String) -> void:
 	background_sprite.texture = background_textures[phase]
 
 	var bgm_phase = "concluding" if phase.begins_with("concluding") else phase
-	update_bgm(phase)
+	update_bgm(bgm_phase)
 
-	current_phase = phase
+	current_phase = bgm_phase
 
 func update_bgm(phase: String) -> void:
 	if not phase_bgm:

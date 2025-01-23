@@ -24,7 +24,7 @@ position = Vector2(27, 58)
 position = Vector2(-30, 120)
 
 [node name="CardSystem" parent="." instance=ExtResource("3_m7eef")]
-position = Vector2(11, 120)
+position = Vector2(11, 152)
 
 [node name="Center line" type="ColorRect" parent="."]
 visible = false

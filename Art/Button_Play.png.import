@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdspljqwa8oi"
-path="res://.godot/imported/Background-Dock_Upper Dock.png-72c2c7176e4f02f3953438702b8d691f.ctex"
+uid="uid://v1usvslel8cr"
+path="res://.godot/imported/Button_Play.png-c3e3f9121aadeffc197876528aba7441.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Background-Dock_Upper Dock.png"
-dest_files=["res://.godot/imported/Background-Dock_Upper Dock.png-72c2c7176e4f02f3953438702b8d691f.ctex"]
+source_file="res://Art/Button_Play.png"
+dest_files=["res://.godot/imported/Button_Play.png-c3e3f9121aadeffc197876528aba7441.ctex"]
 
 [params]
 
