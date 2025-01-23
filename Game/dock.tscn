@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dttsohq4v7oup"]
 
-[ext_resource type="Texture2D" uid="uid://b5yrdrthcq7br" path="res://Art/Background-Dock_Upper Dock.png" id="1_huvrw"]
+[ext_resource type="Texture2D" uid="uid://cdspljqwa8oi" path="res://Art/Background-Dock_Upper Dock.png" id="1_huvrw"]
 
 [node name="Dock" type="Node2D"]
 

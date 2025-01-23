@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://iec111adrpte"]
 
 [ext_resource type="Script" path="res://CardSystem/card.gd" id="1_dwqk6"]
-[ext_resource type="Texture2D" uid="uid://dnitudx1utwq0" path="res://Art/test-squares-02.png" id="1_hirdr"]
-[ext_resource type="Texture2D" uid="uid://b8gkq8jyokmu4" path="res://Art/test-squares-03.png" id="2_imuso"]
-[ext_resource type="Texture2D" uid="uid://0esm545apcob" path="res://Art/test-squares-04.png" id="3_si2mh"]
+[ext_resource type="Texture2D" uid="uid://c0hfkxgr336ax" path="res://Art/test-squares-02.png" id="1_hirdr"]
+[ext_resource type="Texture2D" uid="uid://ddwbm4sidprw8" path="res://Art/test-squares-03.png" id="2_imuso"]
+[ext_resource type="Texture2D" uid="uid://j5pcuo6pam52" path="res://Art/test-squares-04.png" id="3_si2mh"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1ht1x"]
 animations = [{

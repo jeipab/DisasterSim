@@ -100,6 +100,10 @@ func update_bgm(phase: String) -> void:
 		push_error("[Background] Invalid BGM phase: ", phase)
 		return
 
+	if phase == current_phase:
+		print("[Background] Phase hasn't changed, skipping BGM update.")
+		return
+
 	phase_bgm.stop()
 	phase_bgm.stream = bgm_tracks[phase]
 	phase_bgm.play()
