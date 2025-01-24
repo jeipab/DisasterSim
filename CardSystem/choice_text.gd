@@ -37,7 +37,7 @@ var text_width := 600
 var text_base_x := -400
 var text_margin := 100
 var text_y_offset := -100
-var max_chars_per_line := 20
+var max_chars_per_line := 16
 
 # Node references
 @onready var choice_label := $ChoiceLabel
