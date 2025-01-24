@@ -81,7 +81,22 @@ func follow_cursor(delta: float) -> void:
 	rotation_degrees = tilt_ratio * max_tilt_angle
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and not is_animating:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		# Check if click was on UI buttons
+		var ui_layer = get_tree().get_root().find_child("UILayer", true, false)
+		if ui_layer:
+			var exit_button = ui_layer.get_node("ExitButton")
+			var sound_toggle = ui_layer.get_node("SoundToggle")
+			
+			if exit_button and sound_toggle:
+				var mouse_pos = get_viewport().get_mouse_position()
+				var exit_rect = Rect2(exit_button.global_position, exit_button.size * exit_button.scale)
+				var sound_rect = Rect2(sound_toggle.global_position, sound_toggle.size * sound_toggle.scale)
+				
+				# Skip card handling if click was on buttons
+				if exit_rect.has_point(mouse_pos) or sound_rect.has_point(mouse_pos):
+					return
+
 		if position.x >= center_position.x + threshold:
 			swiped_right = true
 			start_fall_animation()

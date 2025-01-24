@@ -4,9 +4,9 @@ extends Node2D
 @onready var card_system = $CardSystem
 @onready var scenario_text = $ScenarioText
 @onready var resource_container = $ResourceContainer
+@onready var exit_button = $ExitButton
+@onready var exit_click_sfx = $exit_click_sfx
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Ensure FSM is initialized before other systems
 	if not fsm:
@@ -20,9 +20,34 @@ func _ready() -> void:
 	card_system.initialize(fsm)
 	scenario_text.initialize(fsm)
 	
+	# Connect button signals
+	exit_button.pressed.connect(_on_exit_button_pressed)
+	exit_button.mouse_entered.connect(_on_button_mouse_entered)
+	exit_button.mouse_exited.connect(_on_button_mouse_exited)
+	
 	print("[Game] All systems initialized")
 
+func _on_exit_button_pressed() -> void:
+	# Temporarily disable card system input
+	if card_system and card_system.get_node_or_null("Card"):
+		card_system.get_node("Card").set_process_input(false)
+	
+	exit_click_sfx.play()
+	exit_button.disabled = true
+	
+	# Create animation tween
+	var tween = create_tween()
+	tween.tween_property(exit_button, "scale", Vector2(0.8, 0.8), 0.1)
+	tween.tween_property(exit_button, "scale", Vector2(1.0, 1.0), 0.1)
+	
+	await tween.finished
+	get_tree().change_scene_to_file("res://Game/start.tscn")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+# Disable card input when mouse is over buttons
+func _on_button_mouse_entered() -> void:
+	if card_system and card_system.get_node_or_null("Card"):
+		card_system.get_node("Card").set_process_input(false)
+
+func _on_button_mouse_exited() -> void:
+	if card_system and card_system.get_node_or_null("Card"):
+		card_system.get_node("Card").set_process_input(true)

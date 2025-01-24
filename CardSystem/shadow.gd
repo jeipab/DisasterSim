@@ -111,6 +111,21 @@ func handle_rise_animation(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		# Check if click was on UI buttons
+		var ui_layer = get_tree().get_root().find_child("UILayer", true, false)
+		if ui_layer:
+			var exit_button = ui_layer.get_node("ExitButton")
+			var sound_toggle = ui_layer.get_node("SoundToggle")
+			
+			if exit_button and sound_toggle:
+				var mouse_pos = get_viewport().get_mouse_position()
+				var exit_rect = Rect2(exit_button.global_position, exit_button.size * exit_button.scale)
+				var sound_rect = Rect2(sound_toggle.global_position, sound_toggle.size * sound_toggle.scale)
+				
+				# Skip card handling if click was on buttons
+				if exit_rect.has_point(mouse_pos) or sound_rect.has_point(mouse_pos):
+					return
+
 		var mouse_pos = get_viewport().get_mouse_position()
 		var screen_center = get_viewport().get_visible_rect().size.x / 2
 		var threshold = 150
