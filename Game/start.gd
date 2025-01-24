@@ -30,8 +30,8 @@ func _on_quit_button_pressed():
 	quit_button.disabled = true
 	
 	var tween = create_tween()
-	tween.tween_property(quit_button, "scale", Vector2(0.12, 0.12), 0.1)
-	tween.tween_property(quit_button, "scale", Vector2(0.15, 0.15), 0.1)
+	tween.tween_property(quit_button, "scale", Vector2(0.07, 0.07), 0.1)
+	tween.tween_property(quit_button, "scale", Vector2(0.09, 0.09), 0.1)
 	
 	await tween.finished
 	get_tree().quit()

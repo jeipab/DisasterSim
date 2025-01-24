@@ -119,14 +119,16 @@ func _input(event: InputEvent) -> void:
 		if ui_layer:
 			var exit_button = ui_layer.get_node("ExitButton")
 			var sound_toggle = ui_layer.get_node("SoundToggle")
+			var retry_button = ui_layer.get_node("RetryButton")
 			
-			if exit_button and sound_toggle:
+			if exit_button and sound_toggle and retry_button:
 				var mouse_pos = get_viewport().get_mouse_position()
 				var exit_rect = Rect2(exit_button.global_position, exit_button.size * exit_button.scale)
 				var sound_rect = Rect2(sound_toggle.global_position, sound_toggle.size * sound_toggle.scale)
+				var retry_rect = Rect2(retry_button.global_position, retry_button.size * retry_button.scale)
 				
 				# Skip card handling if click was on buttons
-				if exit_rect.has_point(mouse_pos) or sound_rect.has_point(mouse_pos):
+				if exit_rect.has_point(mouse_pos) or sound_rect.has_point(mouse_pos) or retry_rect.has_point(mouse_pos):
 					return
 		
 		# Normal card handling
