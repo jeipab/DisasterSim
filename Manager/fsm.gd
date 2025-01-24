@@ -227,7 +227,7 @@ var cards: Dictionary = {
 			},
 			"right":
 			{
-				"text": "Stay home with remaining supplies since the typhoon has calmed down.",
+				"text": "Stay home since the typhoon has calmed down.",
 				"next_card": 14,
 				"resources": {"stamina": -15, "supplies": 15}
 			}
@@ -344,7 +344,7 @@ var cards: Dictionary = {
 		{
 			"left":
 			{
-				"text": "Attempt to go to an evacuation center with better resources.",
+				"text": "Go to an evacuation center for better resources.",
 				"next_card": 17,
 				"resources": {"stamina": -10, "morale": 5}
 			},
@@ -394,14 +394,13 @@ var cards: Dictionary = {
 		{
 			"left":
 			{
-				"text":
-				"Volunteer to assist in distributing aid, gaining morale and a sense of purpose.",
+				"text": "Volunteer to assist in distributing aid.",
 				"next_card": 20,
 				"resources": {"stamina": -5, "morale": 10}
 			},
 			"right":
 			{
-				"text": "Conserve energy and focus on resting while waiting for aid.",
+				"text": "Conserve energy while waiting for aid.",
 				"next_card": 20,
 				"resources": {"stamina": 10, "supplies": -5}
 			}
@@ -420,13 +419,13 @@ var cards: Dictionary = {
 		{
 			"left":
 			{
-				"text": "Push through to the evacuation center and seek medical aid upon arrival.",
+				"text": "Go to the center and seek medical aid upon arrival.",
 				"next_card": 16,
 				"resources": {"stamina": -15, "supplies": 10, "morale": -10}
 			},
 			"right":
 			{
-				"text": "Avoid the floodwaters and take a longer, safer route to the center.",
+				"text": "Avoid the floodwaters and take a longer route.",
 				"next_card": 16,
 				"resources": {"stamina": -15, "supplies": -5}
 			}
@@ -445,7 +444,7 @@ var cards: Dictionary = {
 		{
 			"left":
 			{
-				"text": "Attempt to repair minor damages to make your home more livable.",
+				"text": "Attempt to repair minor damages.",
 				"next_card": 19,
 				"resources": {"stamina": -10, "property": 10}
 			},
@@ -500,7 +499,7 @@ var cards: Dictionary = {
 			},
 			"right":
 			{
-				"text": "Focus on regaining your strength and conserving your resources.",
+				"text": "Regain strength and conserve resources.",
 				"next_card": -1,
 				"resources": {"stamina": 10, "morale": -5}
 			}
