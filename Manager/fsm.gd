@@ -12,7 +12,7 @@ var cards: Dictionary = {
 	1:
 	{
 		"id": "1",
-		"image": "res://Art/directed_square-05.png",
+		"image": "res://Art/CardAssets/Card_1.png",
 		"phase": "initial",
 		"type": "regular",
 		"name": "Typhoon incoming",
@@ -36,7 +36,7 @@ var cards: Dictionary = {
 	2:
 	{
 		"id": "2",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_2.png",
 		"phase": "initial",
 		"type": "regular",
 		"name": "Gather supplies",
@@ -61,7 +61,7 @@ var cards: Dictionary = {
 	3:
 	{
 		"id": "3",
-		"image": "res://Art/test-squares-02.png",
+		"image": "res://Art/CardAssets/Card_3.png",
 		"phase": "initial",
 		"type": "regular",
 		"name": "Help neighbor",
@@ -86,7 +86,7 @@ var cards: Dictionary = {
 	4:
 	{
 		"id": "4",
-		"image": "res://Art/test-squares-03.png",
+		"image": "res://Art/CardAssets/Card_4.png",
 		"phase": "initial",
 		"type": "regular",
 		"name": "Secure home",
@@ -111,7 +111,7 @@ var cards: Dictionary = {
 	5:
 	{
 		"id": "5",
-		"image": "res://Art/test-squares-04.png",
+		"image": "res://Art/CardAssets/Card_5.png",
 		"phase": "initial",
 		"type": "regular",
 		"name": "Pack supplies",
@@ -136,7 +136,7 @@ var cards: Dictionary = {
 	6:
 	{
 		"id": "6",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_6.png",
 		"phase": "initial",
 		"type": "regular",
 		"name": "Stay at home",
@@ -162,7 +162,7 @@ var cards: Dictionary = {
 	7:
 	{
 		"id": "7a",
-		"image": "res://Art/test-squares-02.png",
+		"image": "res://Art/CardAssets/Card_7a.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Flood rising",
@@ -186,7 +186,7 @@ var cards: Dictionary = {
 	8:
 	{
 		"id": "8a",
-		"image": "res://Art/test-squares-03.png",
+		"image": "res://Art/CardAssets/Card_8a.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Evacuation center with sufficient supplies",
@@ -211,7 +211,7 @@ var cards: Dictionary = {
 	9:
 	{
 		"id": "9",
-		"image": "res://Art/test-squares-04.png",
+		"image": "res://Art/CardAssets/Card_9.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Flood rising and supplies running out",
@@ -236,7 +236,7 @@ var cards: Dictionary = {
 	10:
 	{
 		"id": "10a",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_10a.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Evacuating but forgot supplies",
@@ -260,7 +260,7 @@ var cards: Dictionary = {
 	11:
 	{
 		"id": "11",
-		"image": "res://Art/test-squares-02.png",
+		"image": "res://Art/CardAssets/Card_11.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Participate in activities in the evacuation center",
@@ -284,7 +284,7 @@ var cards: Dictionary = {
 	12:
 	{
 		"id": "12",
-		"image": "res://Art/test-squares-03.png",
+		"image": "res://Art/CardAssets/Card_12.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Focus on your own needs",
@@ -309,7 +309,7 @@ var cards: Dictionary = {
 	13:
 	{
 		"id": "13",
-		"image": "res://Art/test-squares-04.png",
+		"image": "res://Art/CardAssets/Card_13.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "At the evacuation center, the typhoon has passed",
@@ -334,7 +334,7 @@ var cards: Dictionary = {
 	14:
 	{
 		"id": "14",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_14.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "At home with no electricity",
@@ -359,7 +359,7 @@ var cards: Dictionary = {
 	15:
 	{
 		"id": "15",
-		"image": "res://Art/test-squares-02.png",
+		"image": "res://Art/CardAssets/Card_15.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Unstable structures in your home",
@@ -384,7 +384,7 @@ var cards: Dictionary = {
 	16:
 	{
 		"id": "16",
-		"image": "res://Art/test-squares-03.png",
+		"image": "res://Art/CardAssets/Card_16.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Incoming supplies in the evacuation center",
@@ -410,7 +410,7 @@ var cards: Dictionary = {
 	17:
 	{
 		"id": "17",
-		"image": "res://Art/test-squares-04.png",
+		"image": "res://Art/CardAssets/Card_17.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Bacteria exposure",
@@ -435,7 +435,7 @@ var cards: Dictionary = {
 	18:
 	{
 		"id": "18",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_18.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Staying at home and rationing supplies",
@@ -460,7 +460,7 @@ var cards: Dictionary = {
 	19:
 	{
 		"id": "19",
-		"image": "res://Art/test-squares-02.png",
+		"image": "res://Art/CardAssets/Card_19.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Stabilizing your home",
@@ -484,7 +484,7 @@ var cards: Dictionary = {
 	20:
 	{
 		"id": "20",
-		"image": "res://Art/test-squares-03.png",
+		"image": "res://Art/CardAssets/Card_20.png",
 		"phase": "recovery",
 		"type": "regular",
 		"name": "Recovering at the evacuation center",
@@ -510,7 +510,7 @@ var cards: Dictionary = {
 	21:
 	{
 		"id": "21",
-		"image": "res://Art/directed_square-05.png",
+		"image": "res://Art/CardAssets/Card_21.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Triumph Against All Odds",
@@ -525,7 +525,7 @@ var cards: Dictionary = {
 	22:
 	{
 		"id": "22",
-		"image": "res://Art/test-squares-02.png",
+		"image": "res://Art/CardAssets/Card_22.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Steady and Resilient",
@@ -540,7 +540,7 @@ var cards: Dictionary = {
 	23:
 	{
 		"id": "23",
-		"image": "res://Art/test-squares-03.png",
+		"image": "res://Art/CardAssets/Card_23.png",
 		"phase": "concluding",
 		"type": "win",
 		"name": "Survived, but Scarred",
@@ -555,7 +555,7 @@ var cards: Dictionary = {
 	24:
 	{
 		"id": "24",
-		"image": "res://Art/test-squares-04.png",
+		"image": "res://Art/CardAssets/Card_24.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Exhaustion and Collapse",
@@ -570,7 +570,7 @@ var cards: Dictionary = {
 	25:
 	{
 		"id": "25",
-		"image": "res://Art/test-squares-02.png",
+		"image": "res://Art/CardAssets/Card_25.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Despair and Isolation",
@@ -585,7 +585,7 @@ var cards: Dictionary = {
 	26:
 	{
 		"id": "26",
-		"image": "res://Art/test-squares-03.png",
+		"image": "res://Art/CardAssets/Card_26.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Property Over People",
@@ -600,7 +600,7 @@ var cards: Dictionary = {
 	27:
 	{
 		"id": "27",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_27.png",
 		"phase": "concluding",
 		"type": "lose",
 		"name": "Starvation and Dehydration",
@@ -617,7 +617,7 @@ var cards: Dictionary = {
 const card_7_variations: Array[Dictionary] = [
 	{
 		"id": "7a",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_7a.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Flood rising",
@@ -640,7 +640,7 @@ const card_7_variations: Array[Dictionary] = [
 	},
 	{
 		"id": "7b",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_7b.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Power cut off",
@@ -666,7 +666,7 @@ const card_7_variations: Array[Dictionary] = [
 const card_8_variations: Array[Dictionary] = [
 	{
 		"id": "8a",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_8a.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Evacuation center with sufficient supplies",
@@ -689,7 +689,7 @@ const card_8_variations: Array[Dictionary] = [
 	},
 	{
 		"id": "8b",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_8b.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Evacuation center with limited supplies",
@@ -715,7 +715,7 @@ const card_8_variations: Array[Dictionary] = [
 const card_10_variations: Array[Dictionary] = [
 	{
 		"id": "10a",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_10a.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Evacuating but forgot supplies",
@@ -738,7 +738,7 @@ const card_10_variations: Array[Dictionary] = [
 	},
 	{
 		"id": "10b",
-		"image": "res://Art/test-squares-01.png",
+		"image": "res://Art/CardAssets/Card_10b.png",
 		"phase": "crisis",
 		"type": "regular",
 		"name": "Evacuating but a fallen tree is blocking the way",
