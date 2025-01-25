@@ -229,7 +229,7 @@ var cards: Dictionary = {
 			{
 				"text": "Stay home since the typhoon has calmed down.",
 				"next_card": 14,
-				"resources": {"stamina": 15, "supplies": -15}
+				"resources": {"stamina": -15, "supplies": 15}
 			}
 		}
 	},

@@ -11,16 +11,14 @@ config_version=5
 [application]
 
 config/name="DisasterSim"
-config/description="DisasterSim: Typhoon Edition is an educational game aimed at enhancing disaster preparedness through immersive gameplay. By simulating real-life typhoon scenarios, it empowers players to make critical decisions, manage resources, and understand the consequences of their actions."
-config/version="1.0.0"
-run/main_scene="res://Game/start.tscn"
+run/main_scene="res://CardSystem/card.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://Art/Icon_Application.png"
+config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/window_width_override=1080
+window/size/window_width_override=1200
 window/size/window_height_override=600
 window/stretch/mode="canvas_items"
