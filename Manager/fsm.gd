@@ -2,11 +2,13 @@ extends Node
 
 enum Choice { LEFT, RIGHT }
 
-var inputs: Array[Choice] = [Choice.LEFT, Choice.RIGHT]
-var states: Array[int]
-var start_state: int = 1
-var final_states: Array[int]
+# M = (Q, Σ, δ, q0, F)
+var states: Array[int] # Set of States 
+var inputs: Array[Choice] = [Choice.LEFT, Choice.RIGHT] # Alphabets (inputs)
+var start_state: int = 1 # Start State
+var final_states: Array[int] # Final States,  F = {q ∈ Q ∣ phase(q) = "concluding"}
 
+# Transition function
 var cards: Dictionary = {
 	# Initial Phase (Preparation)
 	1:
