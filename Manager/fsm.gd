@@ -648,7 +648,7 @@ const card_7_variations: Array[Dictionary] = [
 		{
 			"left":
 			{
-				"text": "Stay at home while trying to use your limited resources efficiently.",
+				"text": "Stay at home while using limited resources efficiently.",
 				"next_card": 9,
 				"resources": {"supplies": -10, "morale": 5}
 			},
