@@ -11,9 +11,11 @@ config_version=5
 [application]
 
 config/name="DisasterSim"
+config/description="A Finite State Machine-Based Disaster Simulation Game to Enhance Disaster Preparedness"
 run/main_scene="res://Game/start.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://Art/Icon_Application.ico"
+config/windows_native_icon="res://Art/Icon_Application.ico"
 
 [display]
 
