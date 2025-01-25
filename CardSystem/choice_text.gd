@@ -16,7 +16,7 @@ var current_pair := {"left": "", "right": ""}
 var text_scale := Vector2(3.0, 3.0)
 var base_y_position := -2200.0  # Starting position
 var base_max_y_offset := 1800.0  # Base maximum distance to move up
-var additional_line_offset := -150  # Additional offset per line
+var additional_line_offset := -210  # Additional offset per line
 var sensitivity := 0.3          # Matches shadow's sensitivity
 var horizontal_smooth_speed := 10.0
 var base_x_position := -650
@@ -60,16 +60,13 @@ func initialize(fsm_node) -> void:
 func count_lines(text: String) -> int:
 	if text.is_empty():
 		return 1
-	var words = text.split(" ")
-	var current_line_length := 0
-	var line_count := 1
+		
+	choice_label.text = text
+	choice_label.custom_minimum_size = Vector2(text_width, 0) 
+	var line_count = choice_label.get_line_count()
 	
-	for word in words:
-		if current_line_length + word.length() + 1 > max_chars_per_line:
-			line_count += 1
-			current_line_length = word.length()
-		else:
-			current_line_length += word.length() + 1
+	# Reset text
+	choice_label.text = ""
 	
 	return line_count
 
